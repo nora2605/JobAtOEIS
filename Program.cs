@@ -3,7 +3,7 @@ using JobAtOEIS.GUI;
 using Raylib_cs;
 using static State;
 
-Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint | ConfigFlags.ResizableWindow | ConfigFlags.MaximizedWindow);
+Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint);
 Raylib.SetTargetFPS(60);
 
 Raylib.InitWindow(V_WIDTH, V_HEIGHT, T("Job at the OEIS"));
