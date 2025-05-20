@@ -35,6 +35,8 @@ while (!Raylib.WindowShouldClose() && !shouldClose)
 
     Raylib.EndDrawing();
 }
+currentScene?.Dispose();
+nextScene?.Dispose();
 
 Raylib.CloseAudioDevice();
 Raylib.CloseWindow();
