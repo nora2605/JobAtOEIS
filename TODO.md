@@ -1,4 +1,6 @@
-# Questions
+# Todo
+
+## Questions
 
 | Question | Difficulty | OEIS Number | Type |
 | :--- | :---: | :---: | ---: |
@@ -10,7 +12,7 @@
 | Digits of the square root of 5 | Hard | [A002163](https://oeis.org/A002163) | Digits |
 | Digits of the cube root of 2 | Medium | [A002580](https://oeis.org/A002580) | Digits |
 | Digits of the Euler-Mascheroni constant | Medium | [A001620](https://oeis.org/A001620) | Digits |
-| Digits of Apéry's constant | Hard | [A002117](https://oeis.org/A002117) | Digits |
+| Digits of ApÃ©ry's constant | Hard | [A002117](https://oeis.org/A002117) | Digits |
 | Digits of the Feigenbaum constant | Hard | [A006890](https://oeis.org/A006890) | Digits |
 | Digits of 1/7 | Easy | [A020806](https://oeis.org/A020806) | Digits |
 | Digits of the Fine structure constant | Medium | [A003673](https://oeis.org/A003673) | Digits |
@@ -20,3 +22,8 @@
 | Order of a Sporadic Group | Hard | [A001228](https://oeis.org/A001228) | Largest |
 | Lucas Number | Medium | [A000032](https://oeis.org/A000032) | Largest |
 | Prime Number | Easy | [A000040](https://oeis.org/A000040) | Largest |
+
+## General
+
+* README
+* The game itself lmao
