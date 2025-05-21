@@ -36,19 +36,19 @@ namespace JobAtOEIS.Config
 
         public readonly void Save()
         {
-            File.WriteAllText("Assets/settings.conf", $"{Language}\n{Volume}");
+            File.WriteAllText(State.A("Assets/settings.conf"), $"{Language}\n{Volume}");
         }
 
         public static Settings Load()
         {
-            if (!File.Exists("Assets/settings.conf"))
+            if (!File.Exists(State.A("Assets/settings.conf")))
             {
                 var current = new Settings();
                 current.Save();
                 return current;
             }
 
-            var lines = File.ReadAllLines("Assets/settings.conf");
+            var lines = File.ReadAllLines(State.A("Assets/settings.conf"));
             return new Settings()
             {
                 language = lines[0],

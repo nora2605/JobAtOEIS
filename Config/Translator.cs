@@ -11,7 +11,7 @@ namespace JobAtOEIS.Config
         public string[] AvailableLanguages => [.. translations.Keys ];
         public Translator()
         {
-            translations = Directory.GetFiles("Assets/", "*.dict").Select(file => KeyValuePair.Create(file[^7..^5], File.ReadAllText(file)
+            translations = Directory.GetFiles(State.A("Assets/"), "*.dict").Select(file => KeyValuePair.Create(file[^7..^5], File.ReadAllText(file)
                 .Replace("\r", "")
                 .Split('\n')
                 .Select(line => (KeyValuePair<string, string>?)(string.IsNullOrEmpty(line) ? null : KeyValuePair.Create(

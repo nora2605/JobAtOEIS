@@ -2,10 +2,14 @@
 
 ## General
 
-* Character Creator
-* Game Level
-* Difficulty Selection
-* Opponents
-* Save State Manager (Delete Button in Settings, one save with highscore, character, is enough)
+* Character Creator UI
+	* More Sprites
+* CharacterConfig.Random()
+* Delete Save State in Settings
 * Dialogue (optional)
-* 
+* OEIS Sequence Class (Largest + Digits Mode)
+* The actual game
+	* firstly draw code
+	* Timer
+	* Input
+	* Animations

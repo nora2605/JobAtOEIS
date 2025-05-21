@@ -1,5 +1,5 @@
 ﻿using JobAtOEIS.Config;
-using JobAtOEIS.GUI;
+using JobAtOEIS.GUI.Scenes;
 using Raylib_cs;
 using static State;
 
@@ -11,7 +11,7 @@ Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint);
 Raylib.SetTargetFPS(60);
 
 Raylib.InitWindow(V_WIDTH, V_HEIGHT, T("Job at the OEIS"));
-Raylib.SetWindowIcon(Raylib.LoadImage("Assets/icon.png"));
+Raylib.SetWindowIcon(Raylib.LoadImage(A("Assets/icon.png")));
 
 Raylib.InitAudioDevice();
 
@@ -68,5 +68,6 @@ static class State
     }
 
     public static string T(string text) => translator.Translate(text, settings.Language);
+    public static string A(string asset) => Persistent.GetPath(asset);
 }
 

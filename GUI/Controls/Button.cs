@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace JobAtOEIS.GUI;
+namespace JobAtOEIS.GUI.Controls;
 
 internal class Button(string text, int x, int y, int width, int height) : Control
 {
@@ -22,7 +22,7 @@ internal class Button(string text, int x, int y, int width, int height) : Contro
     private bool hovering = false;
     private bool pressed = false;
 
-    Sound clickSound = Raylib.LoadSound("Assets/deet.wav");
+    Sound clickSound = Raylib.LoadSound(State.A("Assets/deet.wav"));
 
     public Button(Func<string> text, int x, int y, int width , int height) : this(text(), x, y, width, height) {
         dynText = text;
@@ -54,7 +54,7 @@ internal class Button(string text, int x, int y, int width, int height) : Contro
     public void Render()
     {
         int t = Raylib.MeasureText(Text, fontSize);
-        Color color = pressed ? Color.Beige : (hovering ? Color.Gray : Color.LightGray);
+        Color color = pressed ? Color.Beige : hovering ? Color.Gray : Color.LightGray;
         Raylib.DrawRectangleRec(new Rectangle(X, Y, Width, Height), color);
         Raylib.DrawText(Text, X + (Width - t) / 2, Y + (Height - fontSize) / 2, fontSize, pressed ? Color.White : Color.Black);
         Raylib.DrawRectangleLinesEx(new Rectangle(X, Y, Width, Height), 2, Color.Black);
