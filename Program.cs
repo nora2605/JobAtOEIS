@@ -3,6 +3,10 @@ using JobAtOEIS.GUI;
 using Raylib_cs;
 using static State;
 
+#if !DEBUG
+Raylib.SetTraceLogLevel(TraceLogLevel.Error);
+#endif
+
 Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint);
 Raylib.SetTargetFPS(60);
 
