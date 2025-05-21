@@ -24,7 +24,7 @@ namespace JobAtOEIS.GUI
 
         public Menu()
         {
-            success = Raylib.LoadSound("Assets/success.wav");
+            success = Raylib.LoadSound(A("Assets/success.wav"));
             menuControls = [
                 new Button(() => T("Play"), V_WIDTH / 2 - 100, V_HEIGHT / 2, 200, 50) {
                     OnClick = () => {
@@ -70,11 +70,11 @@ namespace JobAtOEIS.GUI
             bgNums = [.. Enumerable.Range(0, 60).Select(_ => (r.Next(0, 1000), r.Next(0, V_HEIGHT)))];
             phase = (float)r.NextDouble() * 1000;
 
-            bgm = Raylib.LoadMusicStream("Assets/Marquez.qoa");
+            bgm = Raylib.LoadMusicStream(A("Assets/Marquez.qoa"));
             Raylib.SetMusicVolume(bgm, 0.5f);
             Raylib.PlayMusicStream(bgm);
 
-            header = Raylib.LoadTexture("Assets/header.png");
+            header = Raylib.LoadTexture(A("Assets/header.png"));
         }
 
         public void Render()

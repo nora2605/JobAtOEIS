@@ -22,7 +22,7 @@ internal class Button(string text, int x, int y, int width, int height) : Contro
     private bool hovering = false;
     private bool pressed = false;
 
-    Sound clickSound = Raylib.LoadSound("Assets/deet.wav");
+    Sound clickSound = Raylib.LoadSound(State.A("Assets/deet.wav"));
 
     public Button(Func<string> text, int x, int y, int width , int height) : this(text(), x, y, width, height) {
         dynText = text;

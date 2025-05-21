@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Raylib-cs" Version="7.0.1" />
+    <PackageReference Include="Dotnet.Bundle" Version="*" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,5 +23,29 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <PropertyGroup>
+    <CFBundleName>JobAtOEIS</CFBundleName>
+    <CFBundleDisplayName>Job at the OEIS</CFBundleDisplayName>
+    <CFBundleShortVersionString>JobAtOEIS</CFBundleShortVersionString>
+    <CFBundleIdentifier>com.jaoeis</CFBundleIdentifier>
+    <CFBundleVersion>1.0.0</CFBundleVersion>
+    <CFBundlePackageType>AAPL</CFBundlePackageType>
+    <CFBundleSignature>4242</CFBundleSignature>
+    <CFBundleIconFile>AppName.icns</CFBundleIconFile>
+    <NSPrincipalClass>NSApplication</NSPrincipalClass>
+    <NSHighResolutionCapable>true</NSHighResolutionCapable>
+</PropertyGroup>
+
+<ItemGroup>
+    <CFBundleURLTypes Include="dummy">
+        <CFBundleURLName>TestApp URL</CFBundleURLName>
+        <CFBundleURLSchemes>testappurl;testappurl://</CFBundleURLSchemes>
+    </CFBundleURLTypes>
+    <CFBundleURLTypes Include="dummy">
+        <CFBundleURLName>TestApp URL2</CFBundleURLName>
+        <CFBundleURLSchemes>test://</CFBundleURLSchemes>
+    </CFBundleURLTypes>
+</ItemGroup>
 
 </Project>
