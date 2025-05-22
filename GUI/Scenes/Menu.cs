@@ -32,10 +32,10 @@ internal class Menu : Scene
                 OnClick = () => {
                     SaveState s = SaveState.Load();
                     Raylib.PlaySound(success);
-                    if (s.Character.Name == "") {
+                    //if (s.Character.Name == "") {
                         Transition(new CharacterCreator());
-                    }
-                    else Transition(new GameScene());
+                    //}
+                    //else Transition(new GameScene());
                 },
                 SuppressSound = true,
             },

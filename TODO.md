@@ -2,8 +2,8 @@
 
 ## General
 
-* Character Creator UI
-  * More Sprites
+* Character Creator UI (Background!)
+  * More Sprites (Last few)
 * CharacterConfig.Random()
 * Delete Save State in Settings
 * Dialogue (optional)

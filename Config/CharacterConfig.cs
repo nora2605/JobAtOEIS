@@ -21,36 +21,29 @@ namespace JobAtOEIS.Config
             Name = "";
         }
 
-        public static (CharacterConfig?, int) Load(string[] lines)
+        public static CharacterConfig? Load(string data)
         {
-            if (lines.Length < 9) return (null, 0);
-            return (new CharacterConfig()
+            var s = data.Split(':');
+            if (s.Length != 2) return null;
+            (string name, string config) = (s[0], s[1]);
+            if (config.Length != 8) return null;
+            return new CharacterConfig()
             {
-                Name = lines[0],
-                Hair = int.TryParse(lines[1], out int hair) ? hair : 0,
-                HairColor = int.TryParse(lines[2], out int hairColor) ? hairColor : 0,
-                Headwear = int.TryParse(lines[3], out int headwear) ? headwear : 0,
-                SkinColor = int.TryParse(lines[3], out int skinColor) ? skinColor : 0,
-                Top = int.TryParse(lines[4], out int top) ? top : 0,
-                TopColor = int.TryParse(lines[5], out int topColor) ? topColor : 0,
-                Bottom = int.TryParse(lines[6], out int bottom) ? bottom : 0,
-                BottomColor = int.TryParse(lines[7], out int bottomColor) ? bottomColor : 0
-            }, 9);
+                Name = name,
+                Hair = Convert.ToInt32(config[0..1], 16),
+                HairColor = Convert.ToInt32(config[1..2], 16),
+                Headwear = Convert.ToInt32(config[2..3], 16),
+                SkinColor = Convert.ToInt32(config[3..4], 16),
+                Top = Convert.ToInt32(config[4..5], 16),
+                TopColor = Convert.ToInt32(config[5..6], 16),
+                Bottom = Convert.ToInt32(config[6..7], 16),
+                BottomColor = Convert.ToInt32(config[7..8], 16)
+            };
         }
 
-        public string[] Save()
+        public string Serialize()
         {
-            return [
-                Name,
-                Hair.ToString(),
-                HairColor.ToString(),
-                Headwear.ToString(),
-                SkinColor.ToString(),
-                Top.ToString(),
-                TopColor.ToString(),
-                Bottom.ToString(),
-                BottomColor.ToString()
-            ];
+            return $"{Name}:{Hair:X}{HairColor:X}{Headwear:X}{SkinColor:X}{Top:X}{TopColor:X}{Bottom:X}{BottomColor:X}";
         }
     }
 }

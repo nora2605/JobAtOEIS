@@ -85,16 +85,16 @@ internal class Character(int x, int y, CharacterConfig c) : Control
     static Dictionary<int, Color> hairColors = new()
     {
         { 0, Color.Black },
-        { 1, Color.Brown },
-        { 2, Color.Red },
-        { 3, Color.Orange },
-        { 4, Color.Yellow },
-        { 5, Color.Green },
-        { 6, Color.Blue },
-        { 7, Color.Purple },
-        { 8, Color.Violet },
-        { 9, Color.Magenta },
-        { 10, Color.Pink }
+        { 1, Color.DarkBrown },
+        { 2, Color.Brown },
+        { 3, Color.Beige },
+        { 4, Color.Gray },
+        { 5, Color.LightGray },
+        { 6, Color.Purple },
+        { 7, Color.Pink },
+        { 8, Color.Gold },
+        { 9, Color.Blue },
+        { 10, Color.DarkGreen }
     };
 
     static Dictionary<int, Color> regularColors = new()
