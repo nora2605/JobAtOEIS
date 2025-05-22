@@ -18,3 +18,5 @@ Name --- Name
 Your Character Code --- Dein Charakter Code
 Copy Code --- Code Kopieren
 Paste Code --- Code Einfuegen
+Name cannot be empty or contain ':' --- Name darf nicht leer sein oder ':' enthalten
+Invalid code format --- Codeformat ungueltig

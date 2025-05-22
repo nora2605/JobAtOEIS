@@ -126,7 +126,7 @@ internal class CharacterCreator : Scene
             },
             new Button(() => T("Paste Code"), 525, 200, 195, 30) {
                 OnClick = () => {
-                    var c = CharacterConfig.Load(Raylib.GetClipboardText_());
+                    var c = CharacterConfig.Load(Raylib.GetClipboardText_() ?? "");
                     if (c == null)
                     {
                         Raylib.PlaySound(fail);
