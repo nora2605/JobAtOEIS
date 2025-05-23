@@ -73,49 +73,48 @@ internal class Character(int x, int y, CharacterConfig c) : Control
 
     }
 
-    static Dictionary<int, Color> skinColors = new()
-    {
-        { 0, new Color(99, 74, 65) },
-        { 1, new Color(161, 110, 75) },
-        { 2, new Color(212, 170, 120) },
-        { 3, new Color(230, 188, 152) },
-        { 4, new Color(255, 231, 209) },
-    };
+    static Color[] skinColors = [
+        new Color(99, 74, 65),
+        new Color(161, 110, 75),
+        new Color(212, 170, 120),
+        new Color(230, 188, 152),
+        new Color(255, 231, 209),
+    ];
 
-    static Dictionary<int, Color> hairColors = new()
-    {
-        { 0, Color.Black },
-        { 1, Color.DarkBrown },
-        { 2, Color.Brown },
-        { 3, Color.Beige },
-        { 4, Color.Gray },
-        { 5, Color.LightGray },
-        { 6, Color.Purple },
-        { 7, Color.Pink },
-        { 8, Color.Gold },
-        { 9, Color.Blue },
-        { 10, Color.DarkGreen }
-    };
+    static Color[] hairColors = [
+        Color.Black,
+        Color.DarkBrown,
+        Color.Brown,
+        Color.Beige,
+        Color.Gray,
+        Color.LightGray,
+        Color.Purple,
+        Color.Pink,
+        Color.Gold,
+        Color.Blue,
+        Color.DarkGreen,
+        Color.Red,
+        Color.RayWhite,
+    ];
 
-    static Dictionary<int, Color> regularColors = new()
-    {
-        { 0, Color.DarkGray },
-        { 1, Color.Gray },
-        { 2, Color.RayWhite },
-        { 3, Color.Brown },
-        { 4, Color.Red },
-        { 5, Color.Orange },
-        { 6, Color.Yellow },
-        { 7, Color.Green },
-        { 8, Color.DarkGreen },
-        { 9, Color.SkyBlue },
-        { 10, Color.Blue },
-        { 11, Color.Purple },
-        { 12, Color.Violet },
-        { 13, Color.Magenta },
-        { 14, Color.Pink },
-        { 15, Color.Black },
-    };
+    static Color[] regularColors = [
+        Color.DarkGray,
+        Color.Gray,
+        Color.RayWhite,
+        Color.Brown,
+        Color.Red,
+        Color.Orange,
+        Color.Yellow,
+        Color.Green,
+        Color.DarkGreen,
+        Color.SkyBlue,
+        Color.Blue,
+        Color.Purple,
+        Color.Violet,
+        Color.Magenta,
+        Color.Pink,
+        Color.Black,
+    ];
     const int spriteWidth = 32;
     const int spriteHeight = 32;
     enum SpriteLocation : int

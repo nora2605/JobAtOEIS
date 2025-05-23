@@ -16,9 +16,64 @@ namespace JobAtOEIS.Config
         public int Bottom { get; set; }
         public int BottomColor { get; set; }
 
+        public const int MAX_HAIR = 16;
+        public const int MAX_HAIR_COLOR = 13;
+        public const int MAX_HEADWEAR = 16;
+        public const int MAX_SKIN_COLOR = 5;
+        public const int MAX_TOP = 16;
+        public const int MAX_TOP_COLOR = 16;
+        public const int MAX_BOTTOM = 16;
+        public const int MAX_BOTTOM_COLOR = 16;
+
+        private static string[] names = [
+            "Andy",
+            "Bartholomew",
+            "Cecilia",
+            "Darius",
+            "Eleanor",
+            "Felicitas",
+            "Gurt",
+            "Hazel",
+            "Igor Fyodorovich",
+            "Jazlyn",
+            "King John the John",
+            "Liam",
+            "Moo",
+            "Nelson",
+            "Orlanda",
+            "Patricia",
+            "Queen Jane the Jane",
+            "Ralph",
+            "Samantha",
+            "Tennis",
+            "Urgundel the Wise",
+            "Violet",
+            "Wendy",
+            "Xanther",
+            "Yo",
+            "Zoey"
+        ];
+
         public CharacterConfig()
         {
             Name = "";
+        }
+
+        public static CharacterConfig Random()
+        {
+            Random r = new();
+            return new CharacterConfig()
+            {
+                Name = State.T(names[r.Next(0, names.Length)]),
+                Hair = r.Next(0, MAX_HAIR),
+                HairColor = r.Next(0, MAX_HAIR_COLOR),
+                Headwear = r.Next(0, MAX_HEADWEAR),
+                SkinColor = r.Next(0, MAX_SKIN_COLOR),
+                Top = r.Next(0, MAX_TOP),
+                TopColor = r.Next(0, MAX_TOP_COLOR),
+                Bottom = r.Next(0, MAX_BOTTOM),
+                BottomColor = r.Next(0, MAX_BOTTOM_COLOR)
+            };
         }
 
         public static CharacterConfig? Load(string data)

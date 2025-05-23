@@ -23,19 +23,23 @@ internal class Menu : Scene
     Music bgm;
     Texture2D header;
     Sound success;
+    Sound weewoo;
 
     public Menu()
     {
         success = Raylib.LoadSound(A("Assets/success.wav"));
+        weewoo = Raylib.LoadSound(A("Assets/weewoo.wav"));
         menuControls = [
             new Button(() => T("Play"), V_WIDTH / 2 - 100, V_HEIGHT / 2, 200, 50) {
                 OnClick = () => {
                     SaveState s = SaveState.Load();
-                    Raylib.PlaySound(success);
-                    //if (s.Character.Name == "") {
+                    if (s.Character.Name == "") {
                         Transition(new CharacterCreator());
-                    //}
-                    //else Transition(new GameScene());
+                        Raylib.PlaySound(weewoo);
+                        return;
+                    }
+                    Transition(new GameScene());
+                    Raylib.PlaySound(success);
                 },
                 SuppressSound = true,
             },
@@ -55,7 +59,7 @@ internal class Menu : Scene
                         translator.AvailableLanguages.Length
                     ];
                 }
-                
+
             },
             new Slider(() => $"{T("Volume")}: {settings.Volume:0.00}", V_WIDTH / 2 - 100, V_HEIGHT / 2 + 75, 200, 50) {
                 OnChange = (value) => {
@@ -68,6 +72,14 @@ internal class Menu : Scene
                     settings.Save();
                     showSettings = false;
                 }
+            },
+            new Button(() => T("Delete Save"), 25, 25, 225, 50) {
+                OnClick = () => {
+                    new SaveState().Save();
+                    Raylib.PlaySound(success);
+                    showSettings = false;
+                },
+                SuppressSound = true
             },
         ];
 

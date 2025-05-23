@@ -22,6 +22,7 @@ namespace JobAtOEIS.GUI.Controls
         public int Width { get; set; } = width;
         public int Height { get; set; } = height;
         public Action? OnChange { get; set; }
+        public Action? OnSubmit { get; set; }
 
         public bool Failed { get; set; } = false;
         public bool ReadOnly { get; set; } = false;
@@ -80,7 +81,10 @@ namespace JobAtOEIS.GUI.Controls
                     OnChange?.Invoke();
                 }
                 if (Raylib.IsKeyPressed(KeyboardKey.Enter))
+                {
                     active = false;
+                    OnSubmit?.Invoke();
+                }
                 if (Raylib.IsKeyPressed(KeyboardKey.V) && Raylib.IsKeyDown(KeyboardKey.LeftControl))
                 {
                     string clipboard = Raylib.GetClipboardText_();

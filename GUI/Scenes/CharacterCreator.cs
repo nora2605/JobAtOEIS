@@ -1,7 +1,9 @@
 ﻿using JobAtOEIS.Config;
 using JobAtOEIS.GUI.Controls;
 using Raylib_cs;
+using System.Numerics;
 using static State;
+using static JobAtOEIS.Config.CharacterConfig;
 
 namespace JobAtOEIS.GUI.Scenes;
 
@@ -16,6 +18,10 @@ internal class CharacterCreator : Scene
     private Input codeInput;
     private Input nameInput;
     private Label hintLabel;
+
+    private Texture2D header;
+
+    private float phase = 0f;
 
     public CharacterCreator()
     {
@@ -34,61 +40,62 @@ internal class CharacterCreator : Scene
             hintLabel.Text = "";
             character.config.Name = nameInput.Value;
         };
+        nameInput.OnSubmit = () =>
+        {
+            if (string.IsNullOrWhiteSpace(nameInput.Value) || nameInput.Value.Contains(':'))
+            {
+                Raylib.PlaySound(fail);
+                return;
+            }
+            var s = SaveState.Load();
+            s.Character = character.config;
+            s.Save();
+            Raylib.PlaySound(success);
+            Transition(new GameScene());
+        };
 
         codeInput = new Input("", "", 320, 165, 400, 30) { ReadOnly = true, Centered = true };
 
         fail = Raylib.LoadSound(A("Assets/fail.wav"));
         bgm = Raylib.LoadMusicStream(A("Assets/Carl-os.qoa"));
         success = Raylib.LoadSound(A("Assets/success.wav"));
+        header = Raylib.LoadTexture(A("Assets/header.png"));
+
+        var C = (int x, int m) => (x + m) % m;
 
         controls = [
             new Button("<", 25, 20, 25, 25) {
-                OnClick = () => character.config.Hair = (character.config.Hair + 15) % 16
-            },
-            new Button(">", 130, 20, 25, 25) {
-                OnClick = () => character.config.Hair = (character.config.Hair + 1) % 16
-            },
-            new Button("<", 25, 50, 25, 25) {
-                OnClick = () => character.config.HairColor = (character.config.HairColor + 10) % 11
-            },
-            new Button(">", 130, 50, 25, 25) {
-                OnClick = () => character.config.HairColor = (character.config.HairColor + 1) % 11
-            },
-            new Button("<", 25, 80, 25, 25) {
-                OnClick = () => character.config.Headwear = (character.config.Headwear + 15) % 16
-            },
-            new Button(">", 130, 80, 25, 25) {
-                OnClick = () => character.config.Headwear = (character.config.Headwear + 1) % 16
-            },
-            new Button("<", 25, 110, 25, 25) {
-                OnClick = () => character.config.SkinColor = (character.config.SkinColor + 4) % 5
-            },
-            new Button(">", 130, 110, 25, 25) {
-                OnClick = () => character.config.SkinColor = (character.config.SkinColor + 1) % 5
-            },
-            new Button("<", 25, 140, 25, 25) {
-                OnClick = () => character.config.Top = (character.config.Top + 15) % 16
-            },
-            new Button(">", 130, 140, 25, 25) {
-                OnClick = () => character.config.Top = (character.config.Top + 1) % 16
-            },
-            new Button("<", 25, 170, 25, 25) {
-                OnClick = () => character.config.TopColor = (character.config.TopColor + 15) % 16
-            },
-            new Button(">", 130, 170, 25, 25) {
-                OnClick = () => character.config.TopColor = (character.config.TopColor + 1) % 16
-            },
-            new Button("<", 25, 200, 25, 25) {
-                OnClick = () => character.config.Bottom = (character.config.Bottom + 15) % 16
-            },
-            new Button(">", 130, 200, 25, 25) {
-                OnClick = () => character.config.Bottom = (character.config.Bottom + 1) % 16
-            },
-            new Button("<", 25, 230, 25, 25) {
-                OnClick = () => character.config.BottomColor = (character.config.BottomColor + 15) % 16
-            },
-            new Button(">", 130, 230, 25, 25) {
-                OnClick = () => character.config.BottomColor = (character.config.BottomColor + 1) % 16
+                OnClick = () => character.config.Hair = C(character.config.Hair - 1, MAX_HAIR)
+            }, new Button(">", 130, 20, 25, 25) {
+                OnClick = () => character.config.Hair = C(character.config.Hair + 1, MAX_HAIR)
+            }, new Button("<", 25, 50, 25, 25) {
+                OnClick = () => character.config.HairColor = C(character.config.HairColor - 1, MAX_HAIR_COLOR)
+            }, new Button(">", 130, 50, 25, 25) {
+                OnClick = () => character.config.HairColor = C(character.config.HairColor + 1, MAX_HAIR_COLOR)
+            }, new Button("<", 25, 80, 25, 25) {
+                OnClick = () => character.config.Headwear = C(character.config.Headwear - 1, MAX_HEADWEAR)
+            }, new Button(">", 130, 80, 25, 25) {
+                OnClick = () => character.config.Headwear = C(character.config.Headwear + 1, MAX_HEADWEAR)
+            }, new Button("<", 25, 110, 25, 25) {
+                OnClick = () => character.config.SkinColor = C(character.config.SkinColor - 1, MAX_SKIN_COLOR)
+            }, new Button(">", 130, 110, 25, 25) {
+                OnClick = () => character.config.SkinColor = C(character.config.SkinColor + 1, MAX_SKIN_COLOR)
+            }, new Button("<", 25, 140, 25, 25) {
+                OnClick = () => character.config.Top = C(character.config.Top - 1, MAX_TOP)
+            }, new Button(">", 130, 140, 25, 25) {
+                OnClick = () => character.config.Top = C(character.config.Top + 1, MAX_TOP)
+            }, new Button("<", 25, 170, 25, 25) {
+                OnClick = () => character.config.TopColor = C(character.config.TopColor - 1, MAX_TOP_COLOR)
+            }, new Button(">", 130, 170, 25, 25) {
+                OnClick = () => character.config.TopColor = C(character.config.TopColor + 1, MAX_TOP_COLOR)
+            }, new Button("<", 25, 200, 25, 25) {
+                OnClick = () => character.config.Bottom = C(character.config.Bottom - 1, MAX_BOTTOM)
+            }, new Button(">", 130, 200, 25, 25) {
+                OnClick = () => character.config.Bottom = C(character.config.Bottom + 1, MAX_BOTTOM)
+            }, new Button("<", 25, 230, 25, 25) {
+                OnClick = () => character.config.BottomColor = C(character.config.BottomColor - 1, MAX_BOTTOM_COLOR)
+            }, new Button(">", 130, 230, 25, 25) {
+                OnClick = () => character.config.BottomColor = C(character.config.BottomColor + 1, MAX_BOTTOM_COLOR)
             },
             new Label(() => T("Create your Character"), 320, 25, 30),
             new Label(() => T("Hair Type"), 160, 25, 20),
@@ -101,18 +108,7 @@ internal class CharacterCreator : Scene
             new Label(() => T("Bottom Color"), 160, 235, 20),
             nameInput,
             new Button(() => T("Save"), 320, 100, 400, 30) {
-                OnClick = () => {
-                    if (string.IsNullOrWhiteSpace(nameInput.Value) || nameInput.Value.Contains(':'))
-                    {
-                        Raylib.PlaySound(fail);
-                        return;
-                    }
-                    var s = SaveState.Load();
-                    s.Character = character.config;
-                    s.Save();
-                    Raylib.PlaySound(success);
-                    Transition(new GameScene());
-                },
+                OnClick = nameInput.OnSubmit,
                 SuppressSound = true
             },
             new Label(() => T("Your Character Code"), 320, 140, 20),
@@ -150,8 +146,42 @@ internal class CharacterCreator : Scene
     {
         Raylib.UpdateMusicStream(bgm);
 
-        Raylib.ClearBackground(Color.White);
-        
+        phase += Raylib.GetFrameTime();
+        if (phase >= 60) phase -= 60;
+
+        float ascension = Math.Abs(30 - phase) / 30;
+        Color sky = new(0.4f + 0.25f * ascension, 0.55f + 0.3f * ascension, 0.6f + 0.4f * ascension);
+
+        Raylib.ClearBackground(sky);
+        Raylib.DrawCircleV(
+            new Vector2(700 - 20 * MathF.Sin(MathF.PI * phase / 30), 120 - 100 * ascension * ascension),
+            50,
+            Color.Yellow
+        );
+
+        Raylib.DrawRectangleRec(new Rectangle(0, 320, V_WIDTH, V_HEIGHT / 2), Color.Blue);
+        if (5 <= phase && phase <= 15)
+        {
+            float t = (phase - 5) / 10;
+            float t2 = (phase - 10) * (phase - 10) / 25;
+            Raylib.DrawTriangle(
+                new Vector2(270 + 200 * t, 290 + 70 * t2),
+                new Vector2(270 + 200 * t, 310 + 70 * t2),
+                new Vector2(300 + 200 * t, 300 + 70 * t2),
+                Color.RayWhite
+            );
+            //Raylib.DrawEllipse((int)(300 + 200 * t), (int)(300 + 70 * t2), 20, 10, Color.RayWhite);
+            Raylib.DrawTriangleStrip([
+                new Vector2(300 + 200 * t, 285 + 70 * t2),
+                new Vector2(280 + 200 * t, 300 + 70 * t2),
+                new Vector2(320 + 200 * t, 300 + 70 * t2),
+                new Vector2(300 + 200 * t, 315 + 70 * t2),
+            ], 4, Color.RayWhite);
+            Raylib.DrawCircleV(new Vector2(310 + 200 * t, 300 + 70 * t2), 3f, Color.Black);
+        }
+        Raylib.DrawRectangleRec(new Rectangle(0, 330 - 20 * MathF.Sin(MathF.PI * phase / 6), V_WIDTH, V_HEIGHT / 2), Color.DarkBrown);
+        Raylib.DrawTexturePro(header, new Rectangle(0, 0, 300, 150), new Rectangle(200, 340 - (int)(20 * MathF.Sin(MathF.PI * phase / 6)), 400, 100), new Vector2(0, 0), 0f, Color.Brown);
+
         character.Update();
         character.Render();
 
