@@ -1,9 +1,6 @@
 ﻿using JobAtOEIS.Config;
 using JobAtOEIS.GUI.Controls;
 using Raylib_cs;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JobAtOEIS.GUI.Scenes;
 
@@ -33,8 +30,8 @@ internal class GameScene : Scene
             new Button(() => State.T("Shuffle"), 300, 400, 200, 50) {
                 OnClick = () => {
                     foreach (var enemy in enemies) {
-                        enemy.config = CharacterConfig.Random();
-                    }               
+                        enemy.Config = CharacterConfig.Random();
+                    }
                 }
             }
         ];
@@ -47,15 +44,15 @@ internal class GameScene : Scene
 
         player.Update();
         player.Render();
-        int t = Raylib.MeasureText(player.config.Name, 20);
-        Raylib.DrawText(player.config.Name, player.X + 32 - t / 2, player.Y - 25, 20, Color.Black);
+        int t = Raylib.MeasureText(player.Config.Name, 20);
+        Raylib.DrawText(player.Config.Name, player.X + 32 - t / 2, player.Y - 25, 20, Color.Black);
 
         foreach (var enemy in enemies)
         {
             enemy.Update();
             enemy.Render();
-            int et = Raylib.MeasureText(enemy.config.Name, 20);
-            Raylib.DrawText(enemy.config.Name, enemy.X + 32 - et / 2, enemy.Y - 25, 20, Color.Black);
+            int et = Raylib.MeasureText(enemy.Config.Name, 20);
+            Raylib.DrawText(enemy.Config.Name, enemy.X + 32 - et / 2, enemy.Y - 25, 20, Color.Black);
         }
 
         foreach (var control in controls)

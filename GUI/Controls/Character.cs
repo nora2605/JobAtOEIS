@@ -9,7 +9,7 @@ internal class Character(int x, int y, CharacterConfig c) : Control
     Texture2D atlas = Raylib.LoadTexture(State.A("Assets/character.png"));
     public int X { get; set; } = x;
     public int Y { get; set; } = y;
-    public CharacterConfig config { get; set; } = c;
+    public CharacterConfig Config { get; set; } = c;
 
     int blinkingTime = 0;
 
@@ -29,42 +29,42 @@ internal class Character(int x, int y, CharacterConfig c) : Control
     public void Render()
     {
         Raylib.SetTextureFilter(atlas, TextureFilter.Point);
-        
+
         // Head
         Raylib.DrawTexturePro(
             atlas,
-            new Rectangle(spriteWidth * config.Headwear, spriteHeight * (int)(blinkingTime > 0 ? SpriteLocation.HeadBlinking : SpriteLocation.Head), spriteWidth, spriteHeight),
+            new Rectangle(spriteWidth * Config.Headwear, spriteHeight * (int)(blinkingTime > 0 ? SpriteLocation.HeadBlinking : SpriteLocation.Head), spriteWidth, spriteHeight),
             new Rectangle(X, Y, 2 * spriteWidth, 2 * spriteHeight),
             new Vector2(),
             0f,
-            skinColors[config.SkinColor]
+            skinColors[Config.SkinColor]
         );
         // Hair
         Raylib.DrawTexturePro(
             atlas,
-            new Rectangle(spriteWidth * config.Hair, spriteHeight * (int)SpriteLocation.Hair, spriteWidth, spriteHeight),
+            new Rectangle(spriteWidth * Config.Hair, spriteHeight * (int)SpriteLocation.Hair, spriteWidth, spriteHeight),
             new Rectangle(X, Y, 2 * spriteWidth, 2 * spriteHeight),
             new Vector2(),
             0f,
-            hairColors[config.HairColor]
+            hairColors[Config.HairColor]
         );
         // Top
         Raylib.DrawTexturePro(
             atlas,
-            new Rectangle(spriteWidth * config.Top, spriteHeight * (int)SpriteLocation.Top, spriteWidth, spriteHeight),
+            new Rectangle(spriteWidth * Config.Top, spriteHeight * (int)SpriteLocation.Top, spriteWidth, spriteHeight),
             new Rectangle(X, Y + 2 * spriteHeight, 2 * spriteWidth, 2 * spriteHeight),
             new Vector2(),
             0f,
-            regularColors[config.TopColor]
+            regularColors[Config.TopColor]
         );
         // Bottom
         Raylib.DrawTexturePro(
             atlas,
-            new Rectangle(spriteWidth * config.Bottom, spriteHeight * (int)SpriteLocation.Bottom, spriteWidth, spriteHeight),
+            new Rectangle(spriteWidth * Config.Bottom, spriteHeight * (int)SpriteLocation.Bottom, spriteWidth, spriteHeight),
             new Rectangle(X, Y + 4 * spriteHeight, 2 * spriteWidth, 2 * spriteHeight),
             new Vector2(),
             0f,
-            regularColors[config.BottomColor]
+            regularColors[Config.BottomColor]
         );
     }
 

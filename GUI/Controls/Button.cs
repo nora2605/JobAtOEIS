@@ -1,7 +1,4 @@
 ﻿using Raylib_cs;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JobAtOEIS.GUI.Controls;
 
@@ -16,7 +13,7 @@ internal class Button(string text, int x, int y, int width, int height) : Contro
     public int Width { get; set; } = width;
     public int Height { get; set; } = height;
     public Action? OnClick { get; set; }
-    
+
     public bool SuppressSound { get; set; } = false;
 
     private bool hovering = false;
@@ -24,7 +21,8 @@ internal class Button(string text, int x, int y, int width, int height) : Contro
 
     Sound clickSound = Raylib.LoadSound(State.A("Assets/deet.wav"));
 
-    public Button(Func<string> text, int x, int y, int width , int height) : this(text(), x, y, width, height) {
+    public Button(Func<string> text, int x, int y, int width, int height) : this(text(), x, y, width, height)
+    {
         dynText = text;
     }
 

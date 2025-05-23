@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace JobAtOEIS.GUI.Scenes;
+﻿namespace JobAtOEIS.GUI.Scenes;
 
 internal interface Scene : IDisposable
 {

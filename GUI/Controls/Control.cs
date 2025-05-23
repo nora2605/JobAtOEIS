@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace JobAtOEIS.GUI.Controls;
+﻿namespace JobAtOEIS.GUI.Controls;
 
 internal interface Control : IDisposable
 {

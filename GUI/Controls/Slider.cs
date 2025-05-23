@@ -1,7 +1,4 @@
 ﻿using Raylib_cs;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JobAtOEIS.GUI.Controls;
 
@@ -20,7 +17,8 @@ internal class Slider(string text, int x, int y, int width, int height) : Contro
     public float Max { get; set; } = 1f;
 
     private bool pressed = false;
-    public Slider(Func<string> text, int x, int y, int width , int height) : this(text(), x, y, width, height) {
+    public Slider(Func<string> text, int x, int y, int width, int height) : this(text(), x, y, width, height)
+    {
         dynText = text;
     }
     public void Update()

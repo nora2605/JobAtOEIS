@@ -2,8 +2,8 @@
 using JobAtOEIS.GUI.Controls;
 using Raylib_cs;
 using System.Numerics;
-using static State;
 using static JobAtOEIS.Config.CharacterConfig;
+using static State;
 
 namespace JobAtOEIS.GUI.Scenes;
 
@@ -28,7 +28,7 @@ internal class CharacterCreator : Scene
         hintLabel = new Label("", 320, 230, 20);
 
         character = new Character(58, 30, SaveState.Load().Character);
-        nameInput = new Input(() => T("Name"), character.config.Name, 320, 60, 400, 30);
+        nameInput = new Input(() => T("Name"), character.Config.Name, 320, 60, 400, 30);
         nameInput.OnChange = () =>
         {
             if (string.IsNullOrWhiteSpace(nameInput.Value) || nameInput.Value.Contains(':'))
@@ -38,7 +38,7 @@ internal class CharacterCreator : Scene
             }
             nameInput.Failed = false;
             hintLabel.Text = "";
-            character.config.Name = nameInput.Value;
+            character.Config.Name = nameInput.Value;
         };
         nameInput.OnSubmit = () =>
         {
@@ -48,7 +48,7 @@ internal class CharacterCreator : Scene
                 return;
             }
             var s = SaveState.Load();
-            s.Character = character.config;
+            s.Character = character.Config;
             s.Save();
             Raylib.PlaySound(success);
             Transition(new GameScene());
@@ -61,41 +61,41 @@ internal class CharacterCreator : Scene
         success = Raylib.LoadSound(A("Assets/success.wav"));
         header = Raylib.LoadTexture(A("Assets/header.png"));
 
-        var C = (int x, int m) => (x + m) % m;
+        static int C(int x, int m) => (x + m) % m;
 
         controls = [
             new Button("<", 25, 20, 25, 25) {
-                OnClick = () => character.config.Hair = C(character.config.Hair - 1, MAX_HAIR)
+                OnClick = () => character.Config.Hair = C(character.Config.Hair - 1, MAX_HAIR)
             }, new Button(">", 130, 20, 25, 25) {
-                OnClick = () => character.config.Hair = C(character.config.Hair + 1, MAX_HAIR)
+                OnClick = () => character.Config.Hair = C(character.Config.Hair + 1, MAX_HAIR)
             }, new Button("<", 25, 50, 25, 25) {
-                OnClick = () => character.config.HairColor = C(character.config.HairColor - 1, MAX_HAIR_COLOR)
+                OnClick = () => character.Config.HairColor = C(character.Config.HairColor - 1, MAX_HAIR_COLOR)
             }, new Button(">", 130, 50, 25, 25) {
-                OnClick = () => character.config.HairColor = C(character.config.HairColor + 1, MAX_HAIR_COLOR)
+                OnClick = () => character.Config.HairColor = C(character.Config.HairColor + 1, MAX_HAIR_COLOR)
             }, new Button("<", 25, 80, 25, 25) {
-                OnClick = () => character.config.Headwear = C(character.config.Headwear - 1, MAX_HEADWEAR)
+                OnClick = () => character.Config.Headwear = C(character.Config.Headwear - 1, MAX_HEADWEAR)
             }, new Button(">", 130, 80, 25, 25) {
-                OnClick = () => character.config.Headwear = C(character.config.Headwear + 1, MAX_HEADWEAR)
+                OnClick = () => character.Config.Headwear = C(character.Config.Headwear + 1, MAX_HEADWEAR)
             }, new Button("<", 25, 110, 25, 25) {
-                OnClick = () => character.config.SkinColor = C(character.config.SkinColor - 1, MAX_SKIN_COLOR)
+                OnClick = () => character.Config.SkinColor = C(character.Config.SkinColor - 1, MAX_SKIN_COLOR)
             }, new Button(">", 130, 110, 25, 25) {
-                OnClick = () => character.config.SkinColor = C(character.config.SkinColor + 1, MAX_SKIN_COLOR)
+                OnClick = () => character.Config.SkinColor = C(character.Config.SkinColor + 1, MAX_SKIN_COLOR)
             }, new Button("<", 25, 140, 25, 25) {
-                OnClick = () => character.config.Top = C(character.config.Top - 1, MAX_TOP)
+                OnClick = () => character.Config.Top = C(character.Config.Top - 1, MAX_TOP)
             }, new Button(">", 130, 140, 25, 25) {
-                OnClick = () => character.config.Top = C(character.config.Top + 1, MAX_TOP)
+                OnClick = () => character.Config.Top = C(character.Config.Top + 1, MAX_TOP)
             }, new Button("<", 25, 170, 25, 25) {
-                OnClick = () => character.config.TopColor = C(character.config.TopColor - 1, MAX_TOP_COLOR)
+                OnClick = () => character.Config.TopColor = C(character.Config.TopColor - 1, MAX_TOP_COLOR)
             }, new Button(">", 130, 170, 25, 25) {
-                OnClick = () => character.config.TopColor = C(character.config.TopColor + 1, MAX_TOP_COLOR)
+                OnClick = () => character.Config.TopColor = C(character.Config.TopColor + 1, MAX_TOP_COLOR)
             }, new Button("<", 25, 200, 25, 25) {
-                OnClick = () => character.config.Bottom = C(character.config.Bottom - 1, MAX_BOTTOM)
+                OnClick = () => character.Config.Bottom = C(character.Config.Bottom - 1, MAX_BOTTOM)
             }, new Button(">", 130, 200, 25, 25) {
-                OnClick = () => character.config.Bottom = C(character.config.Bottom + 1, MAX_BOTTOM)
+                OnClick = () => character.Config.Bottom = C(character.Config.Bottom + 1, MAX_BOTTOM)
             }, new Button("<", 25, 230, 25, 25) {
-                OnClick = () => character.config.BottomColor = C(character.config.BottomColor - 1, MAX_BOTTOM_COLOR)
+                OnClick = () => character.Config.BottomColor = C(character.Config.BottomColor - 1, MAX_BOTTOM_COLOR)
             }, new Button(">", 130, 230, 25, 25) {
-                OnClick = () => character.config.BottomColor = C(character.config.BottomColor + 1, MAX_BOTTOM_COLOR)
+                OnClick = () => character.Config.BottomColor = C(character.Config.BottomColor + 1, MAX_BOTTOM_COLOR)
             },
             new Label(() => T("Create your Character"), 320, 25, 30),
             new Label(() => T("Hair Type"), 160, 25, 20),
@@ -130,7 +130,7 @@ internal class CharacterCreator : Scene
                         hintLabel.Color = Color.Red;
                         return;
                     }
-                    character.config = c;
+                    character.Config = c;
                     nameInput.Value = c.Name;
                     Raylib.PlaySound(success);
                 },
@@ -192,7 +192,7 @@ internal class CharacterCreator : Scene
             hintLabel.Color = Color.Red;
         }
         else
-            codeInput.Value = character.config.Serialize();
+            codeInput.Value = character.Config.Serialize();
 
         foreach (var control in controls)
         {

@@ -1,11 +1,7 @@
 ﻿using JobAtOEIS.Config;
 using JobAtOEIS.GUI.Controls;
 using Raylib_cs;
-using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
 using static State;
 
 namespace JobAtOEIS.GUI.Scenes;

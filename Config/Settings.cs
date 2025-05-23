@@ -1,59 +1,60 @@
 ﻿using Raylib_cs;
 
-namespace JobAtOEIS.Config
+namespace JobAtOEIS.Config;
+
+internal struct Settings
 {
-    internal struct Settings
+    public string Language
     {
-        public string Language {
-            readonly get => language;
-            set {
-                language = value;
-                Raylib.SetWindowTitle(State.translator.Translate("Job at the OEIS", value));
-            }
-        }
-        private string language;
-
-
-        public float Volume
+        readonly get => language;
+        set
         {
-            readonly get => volume;
-            set
-            {
-                volume = value;
-                Raylib.SetMasterVolume(value);
-            }
+            language = value;
+            Raylib.SetWindowTitle(State.translator.Translate("Job at the OEIS", value));
         }
-        private float volume;
+    }
+    private string language;
 
-        /// <summary>
-        /// Default values
-        /// </summary>
-        public Settings()
+
+    public float Volume
+    {
+        readonly get => volume;
+        set
         {
-            language = "en";
-            volume = 1f;
+            volume = value;
+            Raylib.SetMasterVolume(value);
         }
+    }
+    private float volume;
 
-        public readonly void Save()
+    /// <summary>
+    /// Default values
+    /// </summary>
+    public Settings()
+    {
+        language = "en";
+        volume = 1f;
+    }
+
+    public readonly void Save()
+    {
+        File.WriteAllText(State.A("Assets/settings.conf"), $"{Language}\n{Volume}");
+    }
+
+    public static Settings Load()
+    {
+        if (!File.Exists(State.A("Assets/settings.conf")))
         {
-            File.WriteAllText(State.A("Assets/settings.conf"), $"{Language}\n{Volume}");
+            var current = new Settings();
+            current.Save();
+            return current;
         }
 
-        public static Settings Load()
+        var lines = File.ReadAllLines(State.A("Assets/settings.conf"));
+        return new Settings()
         {
-            if (!File.Exists(State.A("Assets/settings.conf")))
-            {
-                var current = new Settings();
-                current.Save();
-                return current;
-            }
-
-            var lines = File.ReadAllLines(State.A("Assets/settings.conf"));
-            return new Settings()
-            {
-                language = lines[0],
-                volume = lines.Length >= 2 && float.TryParse(lines[1], out float volume) ? volume : 1f
-            };
-        }
+            language = lines[0],
+            volume = lines.Length >= 2 && float.TryParse(lines[1], out float volume) ? volume : 1f
+        };
     }
 }
