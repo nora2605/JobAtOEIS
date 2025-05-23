@@ -44,6 +44,7 @@ internal class CharacterCreator : Scene
         {
             if (string.IsNullOrWhiteSpace(nameInput.Value) || nameInput.Value.Contains(':'))
             {
+                nameInput.Failed = true;
                 Raylib.PlaySound(fail);
                 return;
             }
@@ -191,8 +192,7 @@ internal class CharacterCreator : Scene
             hintLabel.Text = T("Name cannot be empty or contain ':'");
             hintLabel.Color = Color.Red;
         }
-        else
-            codeInput.Value = character.Config.Serialize();
+        codeInput.Value = character.Config.Serialize();
 
         foreach (var control in controls)
         {

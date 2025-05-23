@@ -20,3 +20,20 @@
 | Order of a Sporadic Group | Hard | [A001228](https://oeis.org/A001228) | Largest |
 | Lucas Number | Medium | [A000032](https://oeis.org/A000032) | Largest |
 | Prime Number | Easy | [A000040](https://oeis.org/A000040) | Largest |
+| Integer part of e^x | Medium | [A000149](https://oeis.org/A000149) | Largest |
+| Look and Say Sequence | Medium | [A005150](https://oeis.org/A005150) | Largest |
+| Power of 2 | Easy | [A000079](https://oeis.org/A000079) | Largest |
+| Power of 3 | Medium | [A000244](https://oeis.org/A000244) | Largest |
+| Square Number | Easy | [A000290](https://oeis.org/A000290) | Largest |
+| Factorial | Medium | [A000142](https://oeis.org/A000142) | Largest |
+| Log2 of 3 | Medium | [A020857](https://oeis.org/A020857) | Digits |
+| Avogadro's Number | Medium | [A322578](https://oeis.org/A322578) | Digits |
+| Catalan's Constant | Hard | [A006752](https://oeis.org/A006752) | Digits |
+| Triangular Number | Easy | [A000217](https://oeis.org/A000217) | Largest |
+| Cube Number | Easy | [A000578](https://oeis.org/A000578) | Largest |
+| Elementary Charge | Medium | | |
+| Sylvester's Sequence | Medium | | |
+| Lazy Caterer's Sequence | Medium | | |
+| Busy Beaver Numbers | Hard | | |
+| Ramsey Numbers | Hard | | |
+| Vacuum Permittivity | Medium | | |

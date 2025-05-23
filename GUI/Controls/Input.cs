@@ -27,6 +27,8 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
     public bool Failed { get; set; } = false;
     public bool ReadOnly { get; set; } = false;
     public bool Centered { get; set; } = false;
+    public int MaxLength { get; set; } = -1;
+    public bool LoseFocusOnSubmit { get; set; } = true;
 
     private bool hovering = false;
     private bool active = false;
@@ -71,6 +73,7 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
                 char c = (char)key;
                 if (key >= 32)
                 {
+                    if (MaxLength >= 0 && _value.Length >= MaxLength) return;
                     _value = Value.Insert(cursorPosition++, c.ToString());
                 }
                 OnChange?.Invoke();
@@ -82,7 +85,7 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
             }
             if (Raylib.IsKeyPressed(KeyboardKey.Enter))
             {
-                active = false;
+                if (LoseFocusOnSubmit) active = false;
                 OnSubmit?.Invoke();
             }
             if (Raylib.IsKeyPressed(KeyboardKey.V) && Raylib.IsKeyDown(KeyboardKey.LeftControl))
@@ -90,6 +93,8 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
                 string clipboard = Raylib.GetClipboardText_();
                 if (clipboard != null)
                 {
+                    int allowedLength = MaxLength >= 0 ? MaxLength - _value.Length : -1;
+                    if (allowedLength >= 0 && clipboard.Length > allowedLength) clipboard = clipboard[0..allowedLength];
                     _value = Value.Insert(cursorPosition, clipboard);
                     cursorPosition += clipboard.Length;
                 }

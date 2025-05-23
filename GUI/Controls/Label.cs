@@ -10,6 +10,7 @@ internal class Label(string text, int x, int y, int fontSize) : Control
     public int Y { get; set; } = y;
     public int FontSize { get; set; } = fontSize;
     public Color Color { get; set; } = Color.Black;
+    public bool Centered { get; set; } = false;
     public Label(Func<string> text, int x, int y, int fontSize) : this(text(), x, y, fontSize)
     {
         dynText = text;
@@ -20,7 +21,8 @@ internal class Label(string text, int x, int y, int fontSize) : Control
     }
     public void Render()
     {
-        Raylib.DrawText(Text, X, Y, FontSize, Color);
+        int t = Centered ? Raylib.MeasureText(Text, FontSize) : 0;
+        Raylib.DrawText(Text, X - t / 2, Y, FontSize, Color);
     }
 
     public void Dispose()
