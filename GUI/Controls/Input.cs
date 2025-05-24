@@ -116,21 +116,21 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
         Color color = hovering ? Color.LightGray : Color.RayWhite;
         Raylib.DrawRectangleRec(new Rectangle(X, Y, Width, Height), color);
         Raylib.BeginScissorMode(X, Y, Width, Height);
-        int textNegativeOffset = t > Width - 8 ? t - Width + 8 : 0;
+        int textNegativeOffset = (t > Width - 8 ? t - Width + 8 : 0) / (Centered ? 2 : 1);
         Raylib.DrawText(Value, X + 4 - textNegativeOffset + (Centered ? (Width - t) / 2 - 2 : 0), Y + (Height - 20) / 2, 20, Color.Black);
         if (active)
         {
             int ct = Raylib.MeasureText(Value[0..cursorPosition], 20);
             if (blinkingTime > 0.5f)
                 Raylib.DrawLineEx(
-                    new Vector2(X + 6 + ct - textNegativeOffset, Y + 4),
-                    new Vector2(X + 6 + ct - textNegativeOffset, Y + Height - 4),
+                    new Vector2(X + 6 + ct - textNegativeOffset + (Centered ? (Width - ct) / 2 - 2 : 0), Y + 4),
+                    new Vector2(X + 6 + ct - textNegativeOffset + (Centered ? (Width - ct) / 2 - 2 : 0), Y + Height - 4),
                     2,
                     Color.DarkGray
                 );
         }
         else if (Value == "")
-            Raylib.DrawText(Placeholder, X + 4, Y + (Height - 20) / 2, 20, Color.DarkGray);
+            Raylib.DrawText(Placeholder, X + 4 + (Centered ? (Width - Raylib.MeasureText(Placeholder, 20)) / 2 - 2 : 0), Y + (Height - 20) / 2, 20, Color.DarkGray);
         Raylib.EndScissorMode();
         Raylib.DrawRectangleLinesEx(new Rectangle(X, Y, Width, Height), 2, Failed ? Color.Red : Color.Black);
     }
