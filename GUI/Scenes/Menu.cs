@@ -34,7 +34,7 @@ internal class Menu : Scene
                         Raylib.PlaySound(weewoo);
                         return;
                     }
-                    Transition(new GameScene());
+                    Transition(new GameScene(false));
                     Raylib.PlaySound(success);
                 },
                 SuppressSound = true,

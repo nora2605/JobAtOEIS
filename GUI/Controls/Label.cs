@@ -21,8 +21,11 @@ internal class Label(string text, int x, int y, int fontSize) : Control
     }
     public void Render()
     {
-        int t = Centered ? Raylib.MeasureText(Text, FontSize) : 0;
-        Raylib.DrawText(Text, X - t / 2, Y, FontSize, Color);
+        foreach ((int i, string line) in Text.Split('\n').Index())
+        {
+            int t = Centered ? Raylib.MeasureText(line, FontSize) : 0;
+            Raylib.DrawText(line, X - t / 2, Y + (int)(1.6 * FontSize * i), FontSize, Color);
+        }
     }
 
     public void Dispose()

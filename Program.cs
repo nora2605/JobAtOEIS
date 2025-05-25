@@ -14,6 +14,7 @@ Raylib.InitWindow(V_WIDTH, V_HEIGHT, T("Job at the OEIS"));
 Raylib.SetWindowIcon(Raylib.LoadImage(A("Assets/icon.png")));
 
 Raylib.InitAudioDevice();
+Raylib.SetMasterVolume(settings.Volume);
 
 currentScene = new Menu();
 

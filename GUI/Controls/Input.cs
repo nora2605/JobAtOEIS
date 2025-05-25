@@ -29,6 +29,7 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
     public bool Centered { get; set; } = false;
     public int MaxLength { get; set; } = -1;
     public bool LoseFocusOnSubmit { get; set; } = true;
+    public bool IsNumeric { get; set; } = false;
 
     private bool hovering = false;
     private bool active = false;
@@ -74,6 +75,7 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
                 if (key >= 32)
                 {
                     if (MaxLength >= 0 && _value.Length >= MaxLength) return;
+                    if (IsNumeric && !char.IsDigit(c)) return;
                     _value = Value.Insert(cursorPosition++, c.ToString());
                 }
                 OnChange?.Invoke();
@@ -93,6 +95,8 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
                 string clipboard = Raylib.GetClipboardText_();
                 if (clipboard != null)
                 {
+                    if (IsNumeric)
+                        clipboard =  new string([..clipboard.Where(char.IsDigit)]);
                     int allowedLength = MaxLength >= 0 ? MaxLength - _value.Length : -1;
                     if (allowedLength >= 0 && clipboard.Length > allowedLength) clipboard = clipboard[0..allowedLength];
                     _value = Value.Insert(cursorPosition, clipboard);

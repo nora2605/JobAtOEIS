@@ -1,3 +1,3 @@
-Play --- Play
-Exit --- Exit
-Settings --- Settings
+HelpText0 --- You were recruited by the\nOffshore Elite for Intelligent Seawater!\n\nYou will be presented with a series of\nchallenges to test your\nInteger Sequence Skills against 2 opponents.
+HelpText1 --- You win if your opponents get eaten\nby the fish before you.\n\nYou do this by getting the most digits\nfor every question, to build your digit tower.\n\nBut if any of your digits are wrong,\nyou get 0 points!
+HelpText2 --- If you are curious about the sequence,\nyou can click the OEIS button.\n\nThis will hopefully open your browser\nto the OEIS page for the sequence.\n\nDecimal expansions of numbers start at\nthe first non-zero digit.

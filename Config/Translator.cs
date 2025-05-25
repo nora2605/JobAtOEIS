@@ -12,7 +12,7 @@ internal class Translator
             .Split('\n')
             .Select(line => (KeyValuePair<string, string>?)(string.IsNullOrEmpty(line) ? null : KeyValuePair.Create(
                 line.Split("---")[0].Trim().ToLower(),
-                line.Split("---")[1].Trim()
+                string.Join("\n", line.Split("---")[1].Trim().Split("\\n"))
             )))
             .Where(kv => kv != null)
             .Select(kv => kv!.Value)

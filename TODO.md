@@ -2,14 +2,10 @@
 
 ## General
 
-* Character Creator UI (Background!)
-  * More Sprites (Last few)
-* CharacterConfig.Random()
-* Delete Save State in Settings
-* Dialogue (optional)
-* OEIS Sequence Class (Largest + Digits Mode)
-* The actual game
-  * firstly draw code
+* Game Scene
+  * Background 
+  * Elimination Mechanic
+	* Win/Lose Conditions
   * Timer
-  * Input
-  * Animations
+  * Animations and Sound Effects
+* Translate sequences

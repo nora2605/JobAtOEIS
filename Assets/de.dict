@@ -2,7 +2,7 @@ Play --- Spielen
 Job at the OEIS --- Arbeit bei der OEIS
 Exit --- Beenden
 Settings --- Einstellungen
-Save --- Speichern
+Save and Play --- Speichern und Spielen
 Language --- Sprache
 Volume --- Lautstaerke
 Create your Character --- Erstelle deinen Charakter
@@ -24,3 +24,12 @@ King John the John --- Koenig John der John
 Queen Jane the Jane --- Koenigin Jane die Jane
 Urgundel the Wise --- Urgundel die Weise
 Delete Save --- Spielstand loeschen
+HelpText0 --- Du wurdest rekrutiert, von der\nOffshore Elite for Intelligent Seawater!\n\nDu wirst gleich ein paar Challenges\nloesen, die deine Ganzzahlsequenzfaehigkeiten\ngegen 2 Gegner aufs Spiel setzen.
+HelpText1 --- Du gewinnst wenn deine Gegner vor dir\nvon Fischen gegessen werden.\n\nDas schaffst du indem du fuer jede Frage\ndie meisten Ziffern deinem Ziffernturm hinzufuegst.\n\nAber wenn auch nur eine Ziffer falsch ist,\nbekommst du 0 Punkte!
+HelpText2 --- Wenn dich die Zahlenfolge interessiert,\nkannst du auf den OEIS Knopf klicken.\n\nDas bringt dich zur Seite der OEIS\n\nFuer Kommazahlen gilt, dass die Ziffern\nab der ersten nicht-Null Ziffer beginnen.
+Previous --- Zurueck
+Next --- Weiter
+Close --- Fertig
+Help --- Hilfe
+Answer --- Antwort
+How to Play --- Spielanleitung

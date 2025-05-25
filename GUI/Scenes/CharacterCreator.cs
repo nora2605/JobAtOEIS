@@ -52,7 +52,7 @@ internal class CharacterCreator : Scene
             s.Character = character.Config;
             s.Save();
             Raylib.PlaySound(success);
-            Transition(new GameScene());
+            Transition(new GameScene(true));
         };
 
         codeInput = new Input("", "", 320, 165, 400, 30) { ReadOnly = true, Centered = true };
@@ -108,7 +108,7 @@ internal class CharacterCreator : Scene
             new Label(() => T("Bottom"), 160, 205, 20),
             new Label(() => T("Bottom Color"), 160, 235, 20),
             nameInput,
-            new Button(() => T("Save"), 320, 100, 400, 30) {
+            new Button(() => T("Save and Play"), 320, 100, 400, 30) {
                 OnClick = nameInput.OnSubmit,
                 SuppressSound = true
             },
