@@ -2,6 +2,9 @@
 
 Job at the OEIS (Offshore Elite for Intelligent Seawater) is a game about you, a new recruit at the OEIS being tested to death by their rigorous selection process. Will you fall victim to the intelligent seawater, or will you survive?
 
+![grafik](https://github.com/user-attachments/assets/f9acdf2f-9b2c-4e8d-be88-02764b962f20)
+
+
 ## Notice
 
 OEIS is a registered name by the OEIS Foundation Inc. and in no way affiliated with this project.
