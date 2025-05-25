@@ -8,17 +8,21 @@ namespace JobAtOEIS.GUI.Scenes;
 
 internal class GameScene : Scene
 {
+    const int waterLevel = 448;
+
     List<Control> controls;
     List<Control> helpControls;
+    List<Control> goSControls;
+    Input gameInput;
 
     Music bgm;
     Sound fail;
     Sound success;
 
+    SaveState save;
+
     Character player;
-
     Character[] enemies;
-
     List<char>[] towers = [
         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -29,35 +33,23 @@ internal class GameScene : Scene
         (false, ""),
         (false, ""),
     ];
-
-    // above the water
     int[] towerHeights = [3, 3, 3];
     bool[] pout = [false, false, false];
-    float towerHeightsAnimOffset = 0f;
-    const int waterLevel = 448;
+    int score = 0;
 
-    bool go = false;
-    bool csto = false;
-    float animTimer = 0f;
-    float fishEatTimer = 0f;
-
-    float questionTimer = 10f;
-
-    bool showHelp = false;
-    int helpPage = 0;
-
-    Input gameInput;
     Sequence[] sequences;
     Sequence CurrentSequence { get => sequences[sequence]; }
     int sequence = 0;
 
-    float phase = 0f;
+    float questionTimer = 10f;
 
     public GameScene(bool initialHelp)
     {
         showHelp = initialHelp;
 
-        questionTimer = 11f; // transition
+        save = SaveState.Load();
+
+        questionTimer = initialHelp ? 10f : 11f; // transition
 
         SequenceManager.Load();
         sequences = [..SequenceManager.Sequences];
@@ -71,7 +63,7 @@ internal class GameScene : Scene
         success = Raylib.LoadSound(State.A("Assets/success.wav"));
 
 
-        player = new Character(400 - 32, 100, SaveState.Load().Character);
+        player = new Character(400 - 32, 100, save.Character);
         enemies = [
             new Character(200 - 32, 100, CharacterConfig.Random()),
             new Character(600 - 32, 100, CharacterConfig.Random()),
@@ -85,7 +77,7 @@ internal class GameScene : Scene
         };
         gameInput.OnSubmit = () =>
         {
-            csto = true;
+            animSuspend = true;
             animTimer = 0f;
             bool pCorrect = CurrentSequence.IsValid(gameInput.Value);
 
@@ -102,8 +94,7 @@ internal class GameScene : Scene
             );
             for (int i = 0; i < 2; i++)
             {
-                if (pout[2 * i]) continue;
-                string answer = GetNPCAnswer();
+                string answer = pout[2*i] ? "" : GetNPCAnswer();
                 answers[2 * i] = (CurrentSequence.IsValid(answer), answer);
             }
             gameInput.Value = "";
@@ -150,24 +141,87 @@ internal class GameScene : Scene
                 },
             },
         ];
+
+        goSControls = [
+            new Button(() => State.T("Back to Menu"), 300, 275, 200, 50)
+            {
+                OnClick = () =>
+                {
+                    Raylib.PlaySound(success);
+                    State.Transition(new Menu());
+                },
+                SuppressSound = true,
+            },
+            new Button(() => State.T("Play again"), 300, 215, 200, 50) {
+                OnClick = () =>
+                {
+                    Raylib.PlaySound(success);
+                    State.Transition(new GameScene(false));
+                },
+                SuppressSound = true,
+            }
+        ];
     }
 
+    float phase = 0f;
     public void Render()
     {
-        gameInput.MaxLength = CurrentSequence.MaxDigits;
-        phase += Raylib.GetFrameTime();
-        if (phase >= 60.0f) phase -= 60.0f;
-
-        if (!go && !showHelp && !csto) questionTimer -= Raylib.GetFrameTime();
-        if (!csto && questionTimer <= 0f) gameInput.OnSubmit!.Invoke();
-
         Raylib.UpdateMusicStream(bgm);
 
-        Raylib.ClearBackground(Color.SkyBlue);
-        
+        // Sky
+        Raylib.ClearBackground(new Color(0.8f, 0.9f, 1f));
+
+        // Water Background
+        phase += Raylib.GetFrameTime();
+        if (phase >= 60.0f) phase -= 60.0f;
         Color sea = Color.Blue;
         Raylib.DrawRectangleRec(new Rectangle(0, waterLevel + 8 * MathF.Sin(MathF.PI * phase / 12), 800, 300), sea);
 
+        DrawTowers();
+
+        // Player and Enemies
+        for (int i = 0; i < 3; i++)
+        {
+            Character c = i == 1 ? player : enemies[i / 2];
+            if (!pout[i])
+            {
+                if (!animSuspend)
+                    c.Y = waterLevel - towerHeights[i] * 20 - 64 * 3;
+                c.Update();
+                c.Render();
+                int t = Raylib.MeasureText(c.Config.Name, 20);
+                Raylib.DrawText(c.Config.Name, c.X + 32 - t / 2, c.Y - 25, 20, Color.Black);
+            }
+        }
+
+        if (animSuspend)
+            TowerAnim();
+        else if (!gameOver && !showHelp)
+            DrawTimer();
+
+        if (fishEatTimer > 0f) FishEatAnim();
+
+        // Water Foreground
+        sea.A /= 2;
+        Raylib.DrawRectangleRec(new Rectangle(0, waterLevel + 8 * MathF.Sin(MathF.PI * phase / 12), 800, 300), sea);
+
+        // Game Controls
+        gameInput.MaxLength = CurrentSequence.MaxDigits;
+        Raylib.DrawRectangleRec(new Rectangle(50, 10, 700, 140), new Color(1f, 1f, 1f, .8f));
+        Raylib.DrawRectangleLinesEx(new Rectangle(50, 10, 700, 140), 2, Color.Black);
+        foreach (var control in controls)
+        {
+            if (!showHelp && !gameOver && !animSuspend) control.Update();
+            control.Render();
+        }
+
+        if (gameOver) DrawGOScreen();
+
+        if (showHelp) DrawHelp();
+    }
+
+    void DrawTowers()
+    {
         foreach (var (ti, tower) in towers.Index())
         {
             foreach (var (i, c) in tower.Reverse<char>().TakeLast(6 + towerHeights[ti]).Index())
@@ -181,171 +235,165 @@ internal class GameScene : Scene
             }
             if (tower.Count > 6 + towerHeights[ti] && 6 + towerHeights[ti] > 0) tower.RemoveRange(0, tower.Count - 6 - towerHeights[ti]);
         }
+    }
 
-        if (!pout[1])
+    void DrawGOScreen()
+    {
+        Raylib.DrawRectangleRec(new Rectangle(0, 0, 800, 600), new Color(0, 0, 0, 128));
+        Raylib.DrawRectangle(100, 100, 600, 280, Color.White);
+        Raylib.DrawRectangleLinesEx(new Rectangle(100, 100, 600, 280), 2, Color.Black);
+        Raylib.DrawText(State.T(pout[1] ? "You lose!" : "You win!"), 400 - Raylib.MeasureText(State.T(pout[1] ? "You lose!" : "You win!"), 30) / 2, 110, 30, Color.Black);
+        Raylib.DrawText($"{State.T("Score")}: {score}", 400 - Raylib.MeasureText($"{State.T("Score")}: {score}", 20) / 2, 150, 20, Color.Black);
+        Raylib.DrawText($"{State.T("Highscore")}: {save.HighScore}", 400 - Raylib.MeasureText($"{State.T("Highscore")}: {save.HighScore}", 20) / 2, 180, 20, Color.Black);
+        foreach (var control in goSControls)
+        {
+            control.Update();
+            control.Render();
+        }
+    }
+
+    void DrawTimer()
+    {
+        questionTimer -= Raylib.GetFrameTime();
+        if (questionTimer <= 0f) gameInput.OnSubmit!.Invoke();
+
+        Raylib.DrawRectangleRec(new Rectangle(360, 190, 80, 60), new Color(1f, 1f, 1f, 0.5f));
+        Raylib.DrawRectangleLinesEx(new Rectangle(360, 190, 80, 60), 2, Color.Black);
+        int tt = Raylib.MeasureText($"{questionTimer:0}", 60);
+        Raylib.DrawText($"{questionTimer:0}", 400 - tt / 2, 190, 60, Color.Red);
+    }
+
+    bool showHelp = false;
+    int helpPage = 0;
+    void DrawHelp()
+    {
+        Raylib.DrawRectangle(0, 0, 800, 600, new Color(0, 0, 0, 128));
+        Raylib.DrawRectangle(100, 50, 600, 380, Color.White);
+        Raylib.DrawRectangleLinesEx(new Rectangle(100, 50, 600, 380), 2, Color.Black);
+        foreach (var control in helpControls)
+        {
+            if (!gameOver) control.Update();
+            control.Render();
+        }
+    }
+    
+    float fishEatTimer = 0f;
+    void FishEatAnim()
+    {
+        float p = 1f - fishEatTimer / 2f;
+        float p2 = 4 * (p - 0.5f) * (p - 0.5f);
+        for (int i = 0; i < 3; i++)
+        {
+            if (towerHeights[i] <= 0 && !pout[i])
+            {
+                Vector2 fish1Pos = new(150 + 200 * i + 100 * p, waterLevel - 40 + (580 - waterLevel) * p2);
+                Vector2 fish2Pos = new(250 + 200 * i - 100 * p, waterLevel - 40 + (580 - waterLevel) * p2);
+                float fishRot = MathF.PI / 3f * (fishEatTimer - 1f);
+                DrawFish(fish1Pos, fishRot);
+                DrawFish(fish2Pos, MathF.PI - fishRot);
+                if (p >= 0.5f)
+                {
+                    float pp = 2 * (p - 0.5f);
+                    Character c = i == 1 ? player : enemies[i / 2];
+                    c.Y -= (int)(30 * pp);
+                }
+            }
+        }
+
+        fishEatTimer -= Raylib.GetFrameTime();
+        if (fishEatTimer <= 0f)
+        {
+            fishEatTimer = 0f;
+            for (int i = 0; i < 3; i++)
+            {
+                if (towerHeights[i] <= 0)
+                {
+                    pout[i] = true;
+                }
+            }
+            if (pout[1] || (pout[0] && pout[2]))
+                GameOver();
+            Resume();
+        }
+    }
+
+    float towerHeightsAnimOffset = 0f;
+    int tileAnimOffset = 0;
+    bool animSuspend = false;
+    float animTimer = 0f;
+    void TowerAnim()
+    {
+        if (animTimer < 0.2f * answers.Max(x => x.answer.Length))
+        {
+            int tile = (int)(animTimer / 0.2f);
+            float p = (animTimer % 0.2f) / 0.2f;
+            for (int i = 0; i < 3; i++)
+            {
+                float baseto = waterLevel - (towerHeights[i] + 1) * 20;
+                float th = -20 + (baseto + 20) * p;
+                if (answers[i].correct && tile < answers[i].answer.Length)
+                {
+                    Rectangle b = new(200 + i * 200 - 40, th, 80, 20);
+                    Raylib.DrawRectangleRec(b, Color.RayWhite);
+                    b.Height += 2;
+                    Raylib.DrawRectangleLinesEx(b, 2f, Color.Black);
+                    int ct = Raylib.MeasureText(answers[i].answer[tile].ToString(), 20);
+                    Raylib.DrawText(answers[i].answer[tile].ToString(), (int)(b.X + (b.Width - ct) / 2), (int)(b.Y + 2), 20, Color.Black);
+
+                    if (i == 1) player.Y = (int)(baseto + 56 * p * p - 76 * p) - 64 * 3;
+                    else enemies[i / 2].Y = (int)(baseto + 56 * p * p - 76 * p) - 64 * 3;
+                }
+                else
+                {
+                    if (i == 1) player.Y = (int)(waterLevel - (towerHeights[i] + towerHeightsAnimOffset) * 20 - 64 * 3);
+                    else enemies[i / 2].Y = (int)(waterLevel - (towerHeights[i] + towerHeightsAnimOffset) * 20 - 64 * 3);
+                }
+            }
+            UpdateTower(tile);
+        }
+        else if (animTimer - 0.2f * answers.Max(x => x.answer.Length) <= 0.5f)
+        {
+            UpdateTower(answers.Max(x => x.answer.Length));
+            float p = 2 * (animTimer - 0.2f * answers.Max(x => x.answer.Length));
+            for (int i = 0; i < 3; i++)
+            {
+                if (i == 1) player.Y = (int)(waterLevel - (towerHeights[i] + towerHeightsAnimOffset) * 20 - 64 * 3);
+                else enemies[i / 2].Y = (int)(waterLevel - (towerHeights[i] + towerHeightsAnimOffset) * 20 - 64 * 3);
+                towerHeightsAnimOffset = -p * CurrentSequence.Expected;
+            }
+        }
+        else
         {
             if (fishEatTimer == 0f)
-                player.Y = (int)(waterLevel - (towerHeights[1] + towerHeightsAnimOffset) * 20 - 64 * 3);
-            player.Update();
-            player.Render();
-            int t = Raylib.MeasureText(player.Config.Name, 20);
-            Raylib.DrawText(player.Config.Name, player.X + 32 - t / 2, player.Y - 25, 20, Color.Black);
-        }
-
-        foreach (var (ei, enemy) in enemies.Index())
-        {
-            if (!pout[2*ei])
-            {
-                if (fishEatTimer == 0f)
-                    enemy.Y = (int)(waterLevel - (towerHeights[2 * ei] + towerHeightsAnimOffset) * 20 - 64 * 3);
-                enemy.Update();
-                enemy.Render();
-                int et = Raylib.MeasureText(enemy.Config.Name, 20);
-                Raylib.DrawText(enemy.Config.Name, enemy.X + 32 - et / 2, enemy.Y - 25, 20, Color.Black);
-            }
-        }
-
-        if (csto)
-        {
-            if (animTimer <= 0.2f * answers.Max(x => x.answer.Length))
-            {
-                int tile = (int)(animTimer / 0.2f);
-                float p = (animTimer % 0.2f) / 0.2f;
-                for (int i = 0; i < 3; i++)
-                {
-                    float baseto = waterLevel - (towerHeights[i] + 1) * 20;
-                    float th = -20 + (baseto + 20) * p;
-                    if (answers[i].correct && tile < answers[i].answer.Length)
-                    {
-                        Rectangle b = new Rectangle(200 + i * 200 - 40, th, 80, 20);
-                        Raylib.DrawRectangleRec(b, Color.RayWhite);
-                        b.Height += 2;
-                        Raylib.DrawRectangleLinesEx(b, 2f, Color.Black);
-                        int ct = Raylib.MeasureText(answers[i].answer[tile].ToString(), 20);
-                        Raylib.DrawText(answers[i].answer[tile].ToString(), (int)(b.X + (b.Width - ct) / 2), (int)(b.Y + 2), 20, Color.Black);
-                        if (i == 1) player.Y = (int)(baseto + 56 * p * p - 76 * p);
-                        else enemies[i / 2].Y = (int)(baseto + 56 * p * p - 76 * p);
-                    }
-                }
-                if ((int)((animTimer + Raylib.GetFrameTime()) / 0.2f) > tile)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        if (answers[i].correct && tile < answers[i].answer.Length)
-                        {
-                            towers[i].Add(answers[i].answer[tile]);
-                            towerHeights[i]++;
-                        }
-                    }
-                }
-            }
-            else if (animTimer - 0.2f * answers.Max(x => x.answer.Length) <= 0.5f)
-            {
-                float p = 2 * (animTimer - 0.2f * answers.Max(x => x.answer.Length));
-                for (int i = 0; i < 3; i++)
-                {
-                    towerHeightsAnimOffset = -p * CurrentSequence.Expected;
-                }
-            }
-            else if (fishEatTimer == 0f)
             {
                 for (int i = 0; i < 3; i++)
                 {
                     towerHeights[i] -= CurrentSequence.Expected;
-                    towerHeightsAnimOffset = 0f;
                 }
+                towerHeightsAnimOffset = 0f;
+                UpdateTower(answers.Max(x => x.answer.Length));
+                tileAnimOffset = 0;
                 fishEatTimer = towerHeights.Index().Any(x => !pout[x.Index] && x.Item <= 0) ? 2f : 0f;
                 if (fishEatTimer == 0f)
                     Resume();
             }
-            animTimer += Raylib.GetFrameTime();
         }
-        else if (!go && !showHelp)
-        {
-            Raylib.DrawRectangleRec(new Rectangle(360, 180, 80, 60), new Color(1f, 1f, 1f, 0.5f));
-            Raylib.DrawRectangleLinesEx(new Rectangle(360, 180, 80, 60), 2, Color.Black);
-            int tt = Raylib.MeasureText($"{questionTimer:0}", 60);
-            Raylib.DrawText($"{questionTimer:0}", 400 - tt / 2, 180, 60, Color.Red);
-        }
+        animTimer += Raylib.GetFrameTime();
+    }
 
-        if (fishEatTimer > 0f)
+    void UpdateTower(int to)
+    {
+        for (int ti = tileAnimOffset; ti < to; ti++)
         {
-            float p = 1f - fishEatTimer / 2f;
-            float p2 = 4 * (p - 0.5f) * (p - 0.5f);
             for (int i = 0; i < 3; i++)
             {
-                if (towerHeights[i] <= 0 && !pout[i])
+                if (answers[i].correct && ti < answers[i].answer.Length)
                 {
-                    Vector2 fish1Pos = new(150 + 200 * i + 100 * p, waterLevel - 40 + (580 - waterLevel) * p2);
-                    Vector2 fish2Pos = new(250 + 200 * i - 100 * p, waterLevel - 40 + (580 - waterLevel) * p2);
-                    float fishRot = MathF.PI / 3f * (fishEatTimer - 1f);
-                    DrawFish(fish1Pos, fishRot);
-                    DrawFish(fish2Pos, MathF.PI-fishRot);
-                    if (p >= 0.5f)
-                    {
-                        float pp = 2 * (p - 0.5f);
-                        Character c = i == 1 ? player : enemies[i / 2];
-                        c.Y -= (int)(30 * pp);
-                    }
+                    towers[i].Add(answers[i].answer[ti]);
+                    towerHeights[i]++;
                 }
             }
-
-            fishEatTimer -= Raylib.GetFrameTime();
-            if (fishEatTimer <= 0f)
-            {
-                fishEatTimer = 0f;
-                for (int i = 0; i < 3; i++)
-                {
-                    if (towerHeights[i] <= 0)
-                    {
-                        pout[i] = true;
-                    }
-                }
-                if (pout[1] || (pout[0] && pout[2])) go = true;
-                Resume();
-            }
-        }
-
-        sea.A /= 2;
-        Raylib.DrawRectangleRec(new Rectangle(0, waterLevel + 8 * MathF.Sin(MathF.PI * phase / 12), 800, 300), sea);
-        
-        Raylib.DrawRectangleRec(new Rectangle(50, 10, 700, 140), new Color(1f, 1f, 1f, .8f));
-        Raylib.DrawRectangleLinesEx(new Rectangle(50, 10, 700, 140), 2, Color.Black);
-        foreach (var control in controls)
-        {
-            if (!showHelp && !go && !csto) control.Update();
-            control.Render();
-        }
-
-        if (go)
-        {
-            Raylib.DrawRectangleRec(new Rectangle(0, 0, 800, 600), new Color(0, 0, 0, 128));
-            Raylib.DrawRectangle(100, 100, 600, 280, Color.White);
-            Raylib.DrawRectangleLinesEx(new Rectangle(100, 100, 600, 280), 2, Color.Black);
-            Raylib.DrawText(State.T(pout[1] ? "You lose!" : "You win!"), 400 - Raylib.MeasureText(State.T(pout[1] ? "You lose!" : "You win!"), 30) / 2, 110, 30, Color.Black);
-            var bt = new Button(() => State.T("Back to Menu"), 300, 215, 200, 50)
-            {
-                OnClick = () =>
-                {
-                    Raylib.PlaySound(success);
-                    State.Transition(new Menu());
-                },
-                SuppressSound = true,
-            };
-            bt.Update();
-            bt.Render();
-        }
-
-        if (showHelp)
-        {
-            Raylib.DrawRectangle(0, 0, 800, 600, new Color(0, 0, 0, 128));
-            Raylib.DrawRectangle(100, 50, 600, 380, Color.White);
-            Raylib.DrawRectangleLinesEx(new Rectangle(100, 50, 600, 380), 2, Color.Black);
-            foreach (var control in helpControls)
-            {
-                if (!go) control.Update();
-                control.Render();
-            }
+            tileAnimOffset = to;
         }
     }
 
@@ -366,17 +414,24 @@ internal class GameScene : Scene
     void Resume()
     {
         if (sequence + 1 >= sequences.Length)
-        {
-            State.Transition(new Menu());
-            go = true;
-        }
+            GameOver();
         else
         {
             questionTimer = 10f;
             sequence++;
         }
-        csto = false;
+        score += answers[1].answer.Length;
+        animSuspend = false;
     }
+
+    bool gameOver = false;
+    void GameOver()
+    {
+        gameOver = true;
+        if (!pout[1]) save.HighScore = Math.Max(save.HighScore, score);
+        save.Save();
+    }
+
     string GetNPCAnswer()
     {
         // NPCs should have no clue here

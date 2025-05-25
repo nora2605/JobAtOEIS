@@ -3,12 +3,12 @@
 internal struct SaveState
 {
     public CharacterConfig Character;
-    public int[] HighScores;
+    public int HighScore;
 
     public SaveState()
     {
         Character = new();
-        HighScores = [];
+        HighScore = 0;
     }
 
     public static SaveState Load()
@@ -32,8 +32,7 @@ internal struct SaveState
         return new SaveState()
         {
             Character = c!,
-            HighScores = [..lines.Skip(1)
-                .Select(line => int.TryParse(line, out int score) ? score : 0)]
+            HighScore = int.TryParse(lines[1], out int score) ? score : 0,
         };
     }
 
@@ -41,7 +40,7 @@ internal struct SaveState
     {
         File.WriteAllText(
             State.A("Assets/save.conf"),
-            $"{Character.Serialize()}\n{string.Join("\n", HighScores.Select(x => x.ToString()))}"
+            $"{Character.Serialize()}\n{string.Join("\n", HighScore.ToString())}"
         );
     }
 }
