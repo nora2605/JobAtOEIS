@@ -19,13 +19,13 @@ internal class GameScene : Scene
     Character[] enemies;
 
     List<char>[] towers = [
-        ['3', '1', '4', '1', '5', '9', '2', '6'],
-        ['3', '1', '4', '1', '5', '9', '2', '6'],
-        ['3', '1', '4', '1', '5', '9', '2', '6'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
     ];
     // above the water
-    int[] towerHeights = [2, 2, 2];
-    const int waterLevel = 310;
+    int[] towerHeights = [3, 3, 3];
+    const int waterLevel = 448;
 
     bool go = false;
     bool showHelp = false;
@@ -60,7 +60,7 @@ internal class GameScene : Scene
             new Character(600 - 32, 100, CharacterConfig.Random()),
         ];
 
-        gameInput = new Input(() => State.T("Answer"), "", 250, 340, 300, 50)
+        gameInput = new Input(() => State.T("Answer"), "", 250, 90, 300, 50)
         {
             LoseFocusOnSubmit = false,
             Centered = true,
@@ -96,24 +96,24 @@ internal class GameScene : Scene
         };
 
         controls = [
-            new Label(() => State.T(CurrentSequence.Name), 400, 400, 30) {
+            new Label(() => State.T(CurrentSequence.Name), 400, 20, 30) {
                 Centered = true,
             },
-            new Label(() => State.T(CurrentSequence.Description), 400, 440, 20) {
+            new Label(() => State.T(CurrentSequence.Description), 400, 60, 20) {
                 Centered = true,
             },
-            new Button(() => "OEIS", 160, 340, 80, 50) {
+            new Button(() => "OEIS", 160, 90, 80, 50) {
                 OnClick = () => {
                     Raylib.OpenURL($"https://oeis.org/{CurrentSequence.OEISID}");
                 },
                 SuppressSound = true
             },
-            new Button(() => State.T("Submit"), 560, 340, 80, 50) {
+            new Button(() => State.T("Submit"), 560, 90, 80, 50) {
                 OnClick = gameInput.OnSubmit,
                 SuppressSound = true
             },
             gameInput,
-            new Button(() => State.T("Help"), 10, 10, 100, 30) {
+            new Button(() => State.T("?"), 10, 10, 30, 30) {
                 OnClick = () => {
                     showHelp = true;
                     helpPage = 0;
@@ -153,11 +153,11 @@ internal class GameScene : Scene
         {
             foreach (var (i, c) in tower.Reverse<char>().TakeLast(6 + towerHeights[ti]).Index())
             {
-                Rectangle tile = new Rectangle(200 + ti * 200 - 50, waterLevel + (i - towerHeights[ti]) * 30, 100, 30);
+                Rectangle tile = new(200 + ti * 200 - 40, waterLevel + (i - towerHeights[ti]) * 20, 80, 20);
                 Raylib.DrawRectangleRec(tile, Color.RayWhite);
-                tile.Height = 32;
+                tile.Height += 2;
                 Raylib.DrawRectangleLinesEx(tile, 2f, Color.Black);
-                int ct = Raylib.MeasureText(c.ToString(), 20);
+                int ct = Raylib.MeasureText(c.ToString(), 10);
                 Raylib.DrawText(c.ToString(), (int)(tile.X + (tile.Width - ct) / 2), (int)(tile.Y + 2), 20, Color.Black);
             }
             if (tower.Count > 6 + towerHeights[ti] && 6 + towerHeights[ti] > 0) tower.RemoveRange(0, tower.Count - 6 - towerHeights[ti]);
@@ -165,7 +165,7 @@ internal class GameScene : Scene
         sea.A /= 2;
         Raylib.DrawRectangleRec(new Rectangle(0, waterLevel + 8 * MathF.Sin(MathF.PI * phase / 12), 800, 300), sea);
 
-        player.Y = waterLevel - towerHeights[1] * 30 - 64 * 3;
+        player.Y = waterLevel - towerHeights[1] * 20 - 64 * 3;
         player.Update();
         player.Render();
         int t = Raylib.MeasureText(player.Config.Name, 20);
@@ -173,7 +173,7 @@ internal class GameScene : Scene
 
         foreach (var (ei, enemy) in enemies.Index())
         {
-            enemy.Y = waterLevel - towerHeights[2 * ei] * 30 - 64 * 3;
+            enemy.Y = waterLevel - towerHeights[2 * ei] * 20 - 64 * 3;
             enemy.Update();
             enemy.Render();
             int et = Raylib.MeasureText(enemy.Config.Name, 20);
@@ -181,8 +181,8 @@ internal class GameScene : Scene
         }
 
 
-        Raylib.DrawRectangleRec(new Rectangle(50, 330, 700, 300), new Color(1f, 1f, 1f, .8f));
-        Raylib.DrawRectangleLinesEx(new Rectangle(50, 330, 700, 300), 2, Color.Black);
+        Raylib.DrawRectangleRec(new Rectangle(50, 10, 700, 140), new Color(1f, 1f, 1f, .8f));
+        Raylib.DrawRectangleLinesEx(new Rectangle(50, 10, 700, 140), 2, Color.Black);
         foreach (var control in controls)
         {
             if (!showHelp && !go) control.Update();

@@ -127,8 +127,8 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
             int ct = Raylib.MeasureText(Value[0..cursorPosition], 20);
             if (blinkingTime > 0.5f)
                 Raylib.DrawLineEx(
-                    new Vector2(X + 6 + ct - textNegativeOffset + (Centered ? (Width - ct) / 2 - 2 : 0), Y + 4),
-                    new Vector2(X + 6 + ct - textNegativeOffset + (Centered ? (Width - ct) / 2 - 2 : 0), Y + Height - 4),
+                    new Vector2(X + 6 + ct - textNegativeOffset + (Centered ? (Width - t) / 2 - 2 : 0), Y + 4),
+                    new Vector2(X + 6 + ct - textNegativeOffset + (Centered ? (Width - t) / 2 - 2 : 0), Y + Height - 4),
                     2,
                     Color.DarkGray
                 );
