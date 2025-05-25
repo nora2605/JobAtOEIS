@@ -171,7 +171,6 @@ internal class CharacterCreator : Scene
                 new Vector2(300 + 200 * t, 300 + 70 * t2),
                 Color.RayWhite
             );
-            //Raylib.DrawEllipse((int)(300 + 200 * t), (int)(300 + 70 * t2), 20, 10, Color.RayWhite);
             Raylib.DrawTriangleStrip([
                 new Vector2(300 + 200 * t, 285 + 70 * t2),
                 new Vector2(280 + 200 * t, 300 + 70 * t2),

@@ -3,9 +3,6 @@
 ## General
 
 * Game Scene
-  * Background 
-  * Elimination Mechanic
-	* Win/Lose Conditions
-  * Timer
-  * Animations and Sound Effects
+  * Background
+  * Sound Effects
 * Translate sequences
