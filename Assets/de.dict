@@ -33,3 +33,74 @@ Close --- Fertig
 Answer --- Antwort
 How to Play --- Spielanleitung
 Submit --- Stimmt
+You lose! --- Verloren!
+Score --- Punktzahl
+Highscore --- Highscore
+Play again --- Nochmal
+Back to Menu --- Zum Menue
+Digits of pi --- Ziffern von Pi
+Ratio between the Circumference and Diameter of a Circle --- Verhaeltnis von Kreisdurchmesser zu Umfang
+Digits of e --- Ziffern von E
+Base of the natural Logarithm --- Basis des natuerlichen Logarithmus
+Prime Number --- Primzahl
+Number divisible only by 1 and itself --- Zahl die nur durch 1 und sich selbst teilbar ist
+Digits of the Golden Ratio --- Ziffern des Goldenen Schnitts
+Positive solution to the equation x^2 = x + 1 --- Positive Loesung von x^2 = x + 1
+Digits of Sqrt(2) --- Ziffern von Wurzel(2)
+Positive solution to the equation x^2 = 2 --- Positive Loesung von x^2 = 2
+Digits of Sqrt(3) --- Ziffern von Wurzel(3)
+Positive solution to the equation x^2 = 3 --- Positive Loesung von x^2 = 3
+Digits of Sqrt(5) --- Ziffern von Wurzel(5)
+Positive solution to the equation x^2 = 5 --- Positive Loesung von x^2 = 5
+Digits of Cbrt(2) --- Ziffern der dritten Wurzel von 3
+Positive solution to the equation x^3 = 2 --- Positive Loesung von x^3 = 2
+Digits of the Euler-Mascheroni Constant --- Ziffern der Euler-Mascheroni Konstante
+Limit of the difference between harmonic series and natural log --- Limes der Differenz von harmonischer Folge und ln
+Digits of Apery's Constant --- Ziffern von Apery's Konstante
+The value of the Riemann zeta function at 3 --- Riemann Zeta bei 3
+Digits of the Feigenbaum Constant --- Ziffern der Feigenbaum Konstante
+Ratio of the distances between bifurcation --- Verhaeltnis der Distanzen zwischen Gabelungen
+Non-repeating Digits of 1/7 --- Nicht-wiederholende Ziffern von 1/7
+Decimal expansion of the fraction 1/7 --- 1/7 als Kommazahl
+Digits of the Fine-structure Constant --- Ziffern der Feinstrukturkonstante
+Ratio of the classical electron radius to the Bohr radius --- Verhaeltnis des klassischen Elektronradius zum Bohrradius
+Digits of the Speed of Light --- Ziffern der Lichtgeschwindigkeit
+Speed of the propagation of electromagnetic waves in a vacuum --- Geschwindigkeit von elektromagnetischen Wellen im Vakuum
+Digits of the Planck Constant --- Ziffern des Planckschen Wirkungsquantums
+The relation of a photons energy to its frequency --- Beziehung von Energie zu Frequenz eines Photons
+Fibonacci Number --- Fibonacci Zahl
+Recurrence relation F(n)=F(n-1)+F(n-2),F(0)=0,F(1)=1 --- Rekursionsformel F(n)=F(n-1)+F(n-2),F(0)=0,F(1)=1
+Order of a sporadic group --- Ordnung einer sporadischen Gruppe
+Elements in a group not part of any infinite family of simple groups --- Elementanzahl einer Gruppe, die kein Familienmitglied ist
+Lucas Number --- Lucas Zahl
+Recurrence relation L(n)=L(n-1)+L(n-2),L(0)=2,L(1)=1 --- Rekursionsformel L(n)=L(n-1)+L(n-2),L(0)=2,L(1)=1
+Digits of 1/sqrt(2) --- Ziffern von 1/Wurzel(2)
+Decimal expansion of the sin(pi/4) --- Kommazahl Sin(Pi/4)
+Integer part of e^x --- Ganzzahliger Anteil von e^x
+Number obtained by evaluating floor(e^x) for integer x --- Zahl die durch Abrunden von e^x fuer ganze Zahlen x entsteht
+Look and Say Sequence --- Look-and-say Folge
+Reading the previous term's digits with Run-length encoding --- Vorherige Ziffernfolge mit Run-length Kodierung lesen
+Power of 2 --- Zweierpotenz
+Decimal representation of 1 << n --- Dezimaldarstellung von 1 << n
+Power of 3 --- Dreierpotenz
+3^n for integer n --- 3^n fuer ganze Zahlen n
+Square Number --- Quadratzahl
+n^2 for integer n --- n^2 fuer ganze Zahlen n
+Factorial --- Fakultaet
+n! for integer n --- n! fuer ganze Zahlen n
+Digits of Log2(3) --- Ziffern von Log2(3)
+Exponent for the asymptotic complexity of the Karatsuba Algorithm --- Exponent der Komplexitaet des Karatsuba-Algorithmus
+Digits of Avogadro's Number --- Ziffern von Avogadros Zahl
+Number of particles in a mole --- Anzahl der Teilchen in einem Mol
+Digits of Catalan's Constant --- Ziffern von Catalan's Konstante
+Alternating sum of the reciprocals of the odd square numbers --- Alternierende Summe der Kehrwerte ungerader Quadratzahlen
+Triangular Number --- Dreieckszahl
+n(n+1)/2 for integer n --- n(n+1)/2 fuer ganze Zahlen n
+Elementary Charge --- Elementarladung
+Charge of an electron in Coulombs --- Ladung eines Elektrons in Coulomb
+Number in Sylvester's Sequence --- Zahl in Sylvesters Folge
+Recurrence relation S(n+1)=S(n)^2-S(n)+1,S(0)=2 --- Rekursionsformel S(n+1)=S(n)^2-S(n)+1,S(0)=2
+Busy Beaver --- Busy Beaver
+Maximum steps a Turing machine with n states can take --- Maximale Schritte die eine n-Zustand-Turingmaschine machen kann
+Rado Sigma --- Rado Sigma
+Number of 1s a Turing machine with n states can write --- Anzahl der 1en die eine n-Zustand-Turingmaschine schreiben kann

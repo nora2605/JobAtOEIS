@@ -224,7 +224,7 @@ internal class GameScene : Scene
     {
         foreach (var (ti, tower) in towers.Index())
         {
-            foreach (var (i, c) in tower.Reverse<char>().TakeLast(6 + towerHeights[ti]).Index())
+            foreach (var (i, c) in tower.Reverse<char>().Take(6 + towerHeights[ti]).Index())
             {
                 Rectangle tile = new(200 + ti * 200 - 40, waterLevel + (i - towerHeights[ti] - towerHeightsAnimOffset) * 20, 80, 20);
                 Raylib.DrawRectangleRec(tile, Color.RayWhite);
@@ -233,7 +233,6 @@ internal class GameScene : Scene
                 int ct = Raylib.MeasureText(c.ToString(), 10);
                 Raylib.DrawText(c.ToString(), (int)(tile.X + (tile.Width - ct) / 2), (int)(tile.Y + 2), 20, Color.Black);
             }
-            if (tower.Count > 6 + towerHeights[ti] && 6 + towerHeights[ti] > 0) tower.RemoveRange(0, tower.Count - 6 - towerHeights[ti]);
         }
     }
 
@@ -311,9 +310,9 @@ internal class GameScene : Scene
                     pout[i] = true;
                 }
             }
+            Resume();
             if (pout[1] || (pout[0] && pout[2]))
                 GameOver();
-            Resume();
         }
     }
 
