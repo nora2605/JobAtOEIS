@@ -52,7 +52,7 @@ internal class GameScene : Scene
         questionTimer = initialHelp ? 10f : 11f; // transition
 
         SequenceManager.Load();
-        sequences = [..SequenceManager.Sequences];
+        sequences = [.. SequenceManager.Sequences];
         Random.Shared.Shuffle(sequences);
 
         bgm = Raylib.LoadMusicStream(State.A("Assets/Pabl.o.qoa"));
@@ -94,7 +94,7 @@ internal class GameScene : Scene
             );
             for (int i = 0; i < 2; i++)
             {
-                string answer = pout[2*i] ? "" : GetNPCAnswer();
+                string answer = pout[2 * i] ? "" : GetNPCAnswer();
                 answers[2 * i] = (CurrentSequence.IsValid(answer), answer);
             }
             gameInput.Value = "";
@@ -275,7 +275,7 @@ internal class GameScene : Scene
             control.Render();
         }
     }
-    
+
     float fishEatTimer = 0f;
     void FishEatAnim()
     {
@@ -467,7 +467,8 @@ internal class GameScene : Scene
         return k;
     }
 
-    public void Dispose() {
+    public void Dispose()
+    {
         Raylib.UnloadMusicStream(bgm);
         Raylib.UnloadSound(fail);
         Raylib.UnloadSound(success);

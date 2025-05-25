@@ -96,7 +96,7 @@ internal class Input(string placeholder, string value, int x, int y, int width, 
                 if (clipboard != null)
                 {
                     if (IsNumeric)
-                        clipboard =  new string([..clipboard.Where(char.IsDigit)]);
+                        clipboard = new string([.. clipboard.Where(char.IsDigit)]);
                     int allowedLength = MaxLength >= 0 ? MaxLength - _value.Length : -1;
                     if (allowedLength >= 0 && clipboard.Length > allowedLength) clipboard = clipboard[0..allowedLength];
                     _value = Value.Insert(cursorPosition, clipboard);

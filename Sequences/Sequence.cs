@@ -90,7 +90,8 @@ namespace JobAtOEIS.Sequences
         public int MinDigits { get => Elements.Min(x => x.Length); }
         public int MaxDigits { get => Elements.Max(x => x.Length); }
         public bool IsValid(string n) => Elements.Contains(n);
-        public string GenerateRandomValid(int d) {
+        public string GenerateRandomValid(int d)
+        {
             int r = Random.Shared.Next(Elements.Length);
             while (Elements[r].Length > d && d >= MinDigits)
                 r = Random.Shared.Next(r);
@@ -124,7 +125,7 @@ namespace JobAtOEIS.Sequences
         public int MinDigits { get => 1; }
         public int MaxDigits { get => 15; }
         public bool IsValid(string n) => BigInteger.TryParse(n, out BigInteger num) && IsPrime(num);
-        
+
         private bool IsPrime(BigInteger number)
         {
             if (number < 2) return false;
@@ -157,7 +158,7 @@ namespace JobAtOEIS.Sequences
         public int MinDigits { get => 1; }
         public int MaxDigits { get => 15; }
         public bool IsValid(string n) => BigInteger.TryParse(n, out BigInteger num) && IsSquare(num);
-        
+
         private bool IsSquare(BigInteger number)
         {
             if (number < 0) return false;
@@ -173,7 +174,7 @@ namespace JobAtOEIS.Sequences
             }
             return false;
         }
-        
+
         public string GenerateRandomValid(int d)
         {
             long n = Random.Shared.NextInt64(0, (long)BigInteger.Pow(10, d / 2));
@@ -182,7 +183,7 @@ namespace JobAtOEIS.Sequences
         }
     }
 
-    internal class TriangleSequence(string name, string description, string oeisid, int expected): Sequence
+    internal class TriangleSequence(string name, string description, string oeisid, int expected) : Sequence
     {
         public string Name { get; } = name;
         public string Description { get; } = description;
