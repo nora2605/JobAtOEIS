@@ -12,6 +12,7 @@ namespace JobAtOEIS.Sequences
 
         public static void Load()
         {
+            if (Sequences.Count >= 1) return;
             string[] s = File.ReadAllLines(State.A("Assets/sequences.oeis"));
             foreach (var line in s)
             {
